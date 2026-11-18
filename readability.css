@@ -1,4 +1,5 @@
 /* Solid reading surfaces; color always accompanied by a written category. */
+.page-link{border-radius:10px}
 .page-link{display:inline-flex;align-items:center;text-decoration:none;font-size:13px;line-height:1.8}.records-page-heading{display:flex;justify-content:space-between;align-items:center;gap:20px;margin:15px 0 28px}.records-page-heading h1{font-size:25px}.records-page-grid{grid-template-columns:repeat(3,minmax(0,1fr));align-items:start}.records-page-grid .record{flex-wrap:wrap}.records-page-grid .record-actions{margin-right:auto}@media(max-width:1000px){.records-page-grid{grid-template-columns:1fr}}@media(max-width:700px){.records-page-heading{align-items:flex-start;flex-direction:column}.records-page-heading h1{font-size:22px}.data-toolbar>.page-link{order:3}}
 .content>.panel{background:#141e34;backdrop-filter:none;-webkit-backdrop-filter:none;border-color:#35425b;box-shadow:0 10px 28px #0002}
 .content h2{color:#f1f5ff}.explanation{color:#bfcae0;line-height:2.1}.eyebrow{color:#a9bfe9}
