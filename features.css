@@ -1,1 +1,179 @@
-.today-panel{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;border:1px solid #78b59f55;background:#193c33ef;padding:21px 24px;border-radius:16px;margin-bottom:24px}.today-panel>div:first-child{display:grid;gap:6px}.today-panel small{color:#aed3c1;font-size:12px}.today-panel strong{font-size:30px;color:#b6f1d2}.today-panel p{flex-basis:100%;color:#b4cfc1;font-size:12px;line-height:1.9}.backup-reminder{font-size:12px;color:#c4cfea;margin:0 0 22px;line-height:2}.status-confirm{color:#b7f3d4!important;background:#20493a!important;border-color:#507966!important}.status-done{color:#c0cfeb!important}.confirmed-label{color:#a6eac7!important;font-size:11px}.pending-label{color:#dfc49a!important;font-size:11px}.record-actions{flex-wrap:wrap}.record{flex-wrap:wrap}.record-actions .quiet{font-size:11px;padding:7px 9px}.installments{width:100%;border-top:1px solid #3d4f66;padding-top:12px}.installments summary{font-size:12px;cursor:pointer;color:#dfc99e}.installment{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #35455b;font-size:12px;color:#cbd6eb}.installment button{flex-shrink:0;font-size:11px}.installments[open]{max-height:390px;overflow:auto}.monthly-scroll{overflow-x:auto}.monthly-table{width:100%;border-collapse:collapse;white-space:nowrap;font-size:12px}.monthly-table th,.monthly-table td{padding:14px 12px;text-align:right;border-bottom:1px solid #3b4c67}.monthly-table th{color:#dce7f9;background:#21314a}.monthly-table td{color:#c8d4e8;font-variant-numeric:tabular-nums}.monthly-table .income-number{color:#a2f0c9}#edit-dialog{max-height:90vh;overflow:auto;width:min(460px,92vw);max-width:460px}#edit-dialog .dialog-actions{margin-top:20px}.records-page-grid{grid-template-columns:1fr}.record-main{flex:1;min-width:160px}@media(min-width:1050px){.record-actions{max-width:350px}}@media(max-width:700px){.today-panel{padding:18px}.today-panel strong{font-size:26px}.record-actions{width:100%}}
+.today-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    border: 1px solid #78b59f55;
+    background: #193c33ef;
+    padding: 21px 24px;
+    border-radius: 16px;
+    margin-bottom: 24px
+}
+
+.today-panel>div:first-child {
+    display: grid;
+    gap: 6px
+}
+
+.today-panel small {
+    color: #aed3c1;
+    font-size: 12px
+}
+
+.today-panel strong {
+    font-size: 30px;
+    color: #b6f1d2
+}
+
+.today-panel p {
+    flex-basis: 100%;
+    color: #b4cfc1;
+    font-size: 12px;
+    line-height: 1.9
+}
+
+.backup-reminder {
+    font-size: 12px;
+    color: #c4cfea;
+    margin: 0 0 22px;
+    line-height: 2
+}
+
+.status-confirm {
+    color: #b7f3d4 !important;
+    background: #20493a !important;
+    border-color: #507966 !important
+}
+
+.status-done {
+    color: #c0cfeb !important
+}
+
+.confirmed-label {
+    color: #a6eac7 !important;
+    font-size: 11px
+}
+
+.pending-label {
+    color: #dfc49a !important;
+    font-size: 11px
+}
+
+.record-actions {
+    flex-wrap: wrap
+}
+
+.record {
+    flex-wrap: wrap
+}
+
+.record-actions .quiet {
+    font-size: 11px;
+    padding: 7px 9px
+}
+
+.installments {
+    width: 100%;
+    border-top: 1px solid #3d4f66;
+    padding-top: 12px
+}
+
+.installments summary {
+    font-size: 12px;
+    cursor: pointer;
+    color: #dfc99e
+}
+
+.installment {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #35455b;
+    font-size: 12px;
+    color: #cbd6eb
+}
+
+.installment button {
+    flex-shrink: 0;
+    font-size: 11px
+}
+
+.installments[open] {
+    max-height: 390px;
+    overflow: auto
+}
+
+.monthly-scroll {
+    overflow-x: auto
+}
+
+.monthly-table {
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap;
+    font-size: 12px
+}
+
+.monthly-table th,
+.monthly-table td {
+    padding: 14px 12px;
+    text-align: right;
+    border-bottom: 1px solid #3b4c67
+}
+
+.monthly-table th {
+    color: #dce7f9;
+    background: #21314a
+}
+
+.monthly-table td {
+    color: #c8d4e8;
+    font-variant-numeric: tabular-nums
+}
+
+.monthly-table .income-number {
+    color: #a2f0c9
+}
+
+#edit-dialog {
+    max-height: 90vh;
+    overflow: auto;
+    width: min(460px, 92vw);
+    max-width: 460px
+}
+
+#edit-dialog .dialog-actions {
+    margin-top: 20px
+}
+
+.records-page-grid {
+    grid-template-columns: 1fr
+}
+
+.record-main {
+    flex: 1;
+    min-width: 160px
+}
+
+@media(min-width:1050px) {
+    .record-actions {
+        max-width: 350px
+    }
+}
+
+@media(max-width:700px) {
+    .today-panel {
+        padding: 18px
+    }
+
+    .today-panel strong {
+        font-size: 26px
+    }
+
+    .record-actions {
+        width: 100%
+    }
+}
