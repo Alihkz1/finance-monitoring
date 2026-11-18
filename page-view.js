@@ -2,7 +2,8 @@
   const page = new URLSearchParams(location.search).get('page');
   const recordsPage = page === 'records';
   const monthlyPage = page === 'monthly';
-  const subpage = recordsPage || monthlyPage;
+  const timelinePage = /^\/timeline(?:\/|$)/.test(location.pathname) || page === 'timeline';
+  const subpage = recordsPage || monthlyPage || timelinePage;
 
   // The search/filter panel is commented out in index.html, so every lookup of
   // its controls must stay optional instead of throwing on null.
@@ -11,8 +12,8 @@
 
   document.getElementById('actual-records-panel').hidden = !recordsPage;
 
-  const navigation = document.querySelector('.data-toolbar > .page-link');
-  navigation.href = subpage ? '/app/index.html' : '/app/index.html?page=records';
+  const navigation = document.getElementById('records-navigation');
+  navigation.href = subpage ? '/' : '/app/index.html?page=records';
   navigation.textContent = subpage ? 'بازگشت به برنامه‌ریز' : 'اطلاعات ثبت‌شده';
 
   document.getElementById('monthly-navigation').hidden = monthlyPage;
@@ -25,5 +26,7 @@
   document.querySelector('.layout').hidden = subpage;
   document.getElementById('records-page').hidden = !recordsPage;
   document.getElementById('monthly-page').hidden = !monthlyPage;
-  document.title = monthlyPage ? 'گزارش ماهانه | کش زیاد' : recordsPage ? 'اطلاعات ثبت‌شده | کش زیاد' : 'کش زیاد | برنامه‌ریز پس‌انداز';
+  document.getElementById('timeline-page').hidden = !timelinePage;
+  if(timelinePage)document.getElementById('timeline-navigation').setAttribute('aria-current','page');
+  document.title = timelinePage ? 'مسیر مالی | کش زیاد' : monthlyPage ? 'گزارش ماهانه | کش زیاد' : recordsPage ? 'اطلاعات ثبت‌شده | کش زیاد' : 'کش زیاد | برنامه‌ریز پس‌انداز';
 })();

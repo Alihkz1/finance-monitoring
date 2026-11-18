@@ -4,7 +4,7 @@
 <head>
   <base href="../">
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0b1025">
   <title>کش زیاد | برنامه‌ریز پس‌انداز</title>
   <link rel="stylesheet" href="styles.css">
@@ -19,20 +19,16 @@
 <link rel="stylesheet" href="controls.css">
 <link rel="stylesheet" href="entry-layout.css">
 <link rel="stylesheet" href="message-style.css">
+<link rel="stylesheet" href="mobile-dock.css">
+<link rel="stylesheet" href="more-menu.css">
 </head>
 
 <body>
   <div class="moon-clouds" aria-hidden="true"><span class="moon-cloud back"></span><span
       class="moon-cloud front"></span></div>
   <main class="container">
-    <div class="data-toolbar"><button id="actual-open" type="button" class="quiet">خرج واقعی روزانه</button><a class="quiet landing-entry" href="./">دربارهٔ کش زیاد</a>
-      <div class="backup"><button id="export" class="quiet">دریافت فایل</button><a id="monthly-navigation"
-          class="quiet page-link" href="/app/index.html?page=monthly">گزارش ماهانه</a><button id="import"
-          class="quiet">بازیابی فایل</button><input id="backup-file" type="file" accept="application/json,.json" hidden>
-      </div><a class="quiet page-link" href="/app/index.html?page=records">اطلاعات ثبت‌شده</a><button id="delete-all"
-        type="button" class="delete-all">حذف همهٔ اطلاعات</button>
-    </div>
-    <p id="backup-reminder" class="backup-reminder" role="status"></p>
+    <div class="data-toolbar"><button id="actual-open" type="button" class="quiet">خرج واقعی روزانه</button><a id="timeline-navigation" class="quiet page-link" href="/timeline">مسیر مالی</a><a id="monthly-navigation" class="quiet page-link" href="/app/index.html?page=monthly">گزارش ماهانه</a><button id="import" class="quiet">بازیابی فایل</button><input id="backup-file" type="file" accept="application/json,.json" hidden><a id="records-navigation" class="quiet page-link" href="/app/index.html?page=records">اطلاعات ثبت‌شده</a><a class="quiet landing-entry" href="/landing">دربارهٔ کش زیاد</a><button id="more-open" type="button" class="quiet" aria-haspopup="menu" aria-expanded="false" aria-controls="more-menu">more</button></div>
+<div id="more-menu" class="more-menu" popover="manual" role="menu" aria-label="more"><button id="export" type="button" role="menuitem">دریافت فایل</button><button id="delete-all" type="button" role="menuitem" class="delete-all">حذف همهٔ اطلاعات</button></div>
     <!-- <section id="filter-controls" class="filter-panel"><div class="tools-heading"><h2>جست‌وجو و فیلتر</h2><button id="scenario-open" class="quiet" type="button">اگر این خرید را انجام بدهم…</button></div><div class="filter-row"><div><label for="filter-query">عنوان</label><input id="filter-query" type="search" placeholder="جست‌وجوی عنوان…"></div><div><label for="filter-type">نوع</label><select id="filter-type"><option value="all">همه</option><option value="income">درآمد</option><option value="expense">هزینه</option><option value="bank">قسط بانکی</option></select></div><div><label for="filter-status">وضعیت</label><select id="filter-status"><option value="all">همه</option><option value="done">تأییدشده</option><option value="pending">تأییدنشده</option></select></div></div><div class="filter-dates"><div><label><input id="filter-from" type="checkbox">از تاریخ</label><div id="filter-from-date" class="date-picker" aria-label="شروع بازه"></div></div><div><label><input id="filter-to" type="checkbox">تا تاریخ</label><div id="filter-to-date" class="date-picker" aria-label="پایان بازه"></div></div><button id="filter-reset" class="quiet">پاک کردن فیلتر</button></div><p id="filter-summary"></p><p id="filter-error" role="status"></p></section> -->
     <section class="overview" aria-label="خلاصه مالی">
       <article class="balance"><span>پس‌انداز در تاریخ مبنا</span>
@@ -128,30 +124,9 @@
         
       </aside>
       <div class="content">
-        <section class="panel forecast">
-          <div class="section-top">
-            <div>
-              <p class="eyebrow">مسیر مالی شما</p>
-              <h2>پس از هر دریافت و پرداخت چقدر می‌ماند؟</h2>
-            </div><span class="pill" id="event-count">۰ پرداخت</span>
-          </div>
-          <p class="explanation">مانده = پس‌انداز مبنا + درآمدهای دریافتی تا این تاریخ − خرج روزانهٔ روزهای سپری‌شده −
-            هزینه‌ها و اقساط تا همین تاریخ.</p>
-          <div class="event-legend" aria-label="راهنمای رنگ رویدادها"><span class="income">درآمد · افزایش
-              موجودی</span><span class="expense">هزینه · کاهش موجودی</span><span class="bank">قسط بانکی · کاهش
-              موجودی</span></div>
-          <div class="insight" id="insight"></div>
-          <div id="timeline" class="timeline"></div>
-          <div id="empty" class="empty"><span aria-hidden="true">＋</span>
-            <h3>اولین رویداد مالی را اضافه کنید</h3>
-            <p>درآمد، هزینه یا قسط بانکی ثبت کنید تا ماندهٔ هر تاریخ مشخص شود.</p>
-          </div><button id="show-more" class="quiet load-more" hidden>نمایش رویدادهای بیشتر</button>
-        </section>
+        
 
-        <footer class="footnote"><span id="save-state" hidden></span>
-          <p>مسیر مالی شامل تراکنش‌های واقعی و برنامه‌ریزی‌شده است؛ هر رکورد فقط یک بار حساب می‌شود. موجودی امروز فقط
-            تأییدها را لحاظ می‌کند و خرج روزانه همواره برآوردی است. </p>
-        </footer>
+        <span id="save-state" hidden></span>
       </div>
     </div>
     <section id="records-page" hidden>
@@ -220,7 +195,26 @@
         </section>
       </div>
     </section>
-  </main>
+  <section id="timeline-page" hidden><div class="records-page-heading"><h1>مسیر مالی</h1><a class="quiet page-link" href="/">بازگشت به داشبورد</a></div><div class="content"><section class="panel forecast">
+          <div class="section-top">
+            <div>
+              <p class="eyebrow">مسیر مالی شما</p>
+              <h2>پس از هر دریافت و پرداخت چقدر می‌ماند؟</h2>
+            </div><span class="pill" id="event-count">۰ پرداخت</span>
+          </div>
+          <p class="explanation">مانده = پس‌انداز مبنا + درآمدهای دریافتی تا این تاریخ − خرج روزانهٔ روزهای سپری‌شده −
+            هزینه‌ها و اقساط تا همین تاریخ.</p>
+          <div class="event-legend" aria-label="راهنمای رنگ رویدادها"><span class="income">درآمد · افزایش
+              موجودی</span><span class="expense">هزینه · کاهش موجودی</span><span class="bank">قسط بانکی · کاهش
+              موجودی</span></div>
+          <div class="insight" id="insight"></div>
+          <div id="timeline" class="timeline"></div>
+          <div id="empty" class="empty"><span aria-hidden="true">＋</span>
+            <h3>اولین رویداد مالی را اضافه کنید</h3>
+            <p>درآمد، هزینه یا قسط بانکی ثبت کنید تا ماندهٔ هر تاریخ مشخص شود.</p>
+          </div><button id="show-more" class="quiet load-more" hidden>نمایش رویدادهای بیشتر</button>
+        </section></div></section>
+</main>
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
   <dialog id="actual-dialog">
           <h2>خرج واقعی روزانه</h2>
@@ -285,6 +279,7 @@
   <script src="date-dropdown.js"></script>
   <script src="shooting-stars.js"></script>
 <script src="toolbar.js"></script>
+<script src="more.js"></script>
 </body>
 
 </html>
