@@ -6,6 +6,8 @@
   <link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="typography.css">
   <link rel="stylesheet" href="night.css">
 <link rel="stylesheet" href="date-dropdown.css">
+<link rel="stylesheet" href="readability.css">
+<link rel="stylesheet" href="shooting-stars.css">
 </head>
 <body>
   <main class="container">
@@ -19,7 +21,7 @@
         <section class="panel"><div class="panel-title"><span class="step">۰۴</span><h2>درآمد پیش رو</h2></div><form id="income-form" novalidate><label for="income-title">عنوان درآمد</label><input id="income-title" maxlength="100" placeholder="مثلاً حقوق، پاداش یا طلب" required><label for="income-amount">مبلغ دریافتی <em>تومان</em></label><input id="income-amount" inputmode="numeric" placeholder="۰" required><label id="income-date-label">تاریخ دریافت شمسی</label><div id="income-date" class="date-picker" role="group" aria-labelledby="income-date-label"></div><p class="field-note">این مبلغ فقط از تاریخ دریافت در محاسبات موجودی لحاظ می‌شود.</p><div class="form-actions"><button type="submit" class="primary">افزودن درآمد</button></div></form></section>
       </aside>
       <div class="content">
-        <section class="panel forecast"><div class="section-top"><div><p class="eyebrow">مسیر مالی شما</p><h2>پس از هر دریافت و پرداخت چقدر می‌ماند؟</h2></div><span class="pill" id="event-count">۰ پرداخت</span></div><p class="explanation">مانده = پس‌انداز مبنا + درآمدهای دریافتی تا این تاریخ − خرج روزانهٔ روزهای سپری‌شده − هزینه‌ها و اقساط تا همین تاریخ.</p><div class="insight" id="insight"></div><div id="timeline" class="timeline"></div><div id="empty" class="empty"><span aria-hidden="true">＋</span><h3>اولین رویداد مالی را اضافه کنید</h3><p>درآمد، هزینه یا قسط بانکی ثبت کنید تا ماندهٔ هر تاریخ مشخص شود.</p></div><button id="show-more" class="quiet load-more" hidden>نمایش رویدادهای بیشتر</button></section>
+        <section class="panel forecast"><div class="section-top"><div><p class="eyebrow">مسیر مالی شما</p><h2>پس از هر دریافت و پرداخت چقدر می‌ماند؟</h2></div><span class="pill" id="event-count">۰ پرداخت</span></div><p class="explanation">مانده = پس‌انداز مبنا + درآمدهای دریافتی تا این تاریخ − خرج روزانهٔ روزهای سپری‌شده − هزینه‌ها و اقساط تا همین تاریخ.</p><div class="event-legend" aria-label="راهنمای رنگ رویدادها"><span class="income">درآمد · افزایش موجودی</span><span class="expense">هزینه · کاهش موجودی</span><span class="bank">قسط بانکی · کاهش موجودی</span></div><div class="insight" id="insight"></div><div id="timeline" class="timeline"></div><div id="empty" class="empty"><span aria-hidden="true">＋</span><h3>اولین رویداد مالی را اضافه کنید</h3><p>درآمد، هزینه یا قسط بانکی ثبت کنید تا ماندهٔ هر تاریخ مشخص شود.</p></div><button id="show-more" class="quiet load-more" hidden>نمایش رویدادهای بیشتر</button></section>
         <section class="panel"><div class="section-top"><h2>وام‌های ثبت‌شده</h2><span class="pill" id="bank-count">۰ وام</span></div><div id="loans-list" class="records"></div></section>
         <section class="panel"><div class="section-top"><h2>هزینه‌های ثبت‌شده</h2><span class="pill" id="expense-count">۰ هزینه</span></div><div id="expenses-list" class="records"></div></section>
         <section class="panel"><div class="section-top"><h2>درآمدهای ثبت‌شده</h2><span class="pill" id="income-count">۰ درآمد</span></div><div id="incomes-list" class="records"></div></section>
@@ -33,5 +35,6 @@
   <script src="planner.js"></script><script src="app.js"></script>
   <script src="amount-format.js"></script>
 <script src="date-dropdown.js"></script>
+<script src="shooting-stars.js"></script>
 </body>
 </html>

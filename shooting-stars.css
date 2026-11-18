@@ -1,0 +1,5 @@
+.shooting-stars{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:-1;contain:strict}
+.shooting-star{position:absolute;left:var(--x);top:var(--y);width:clamp(90px,14vw,190px);height:2px;opacity:0;transform:rotate(32deg);background:linear-gradient(90deg,transparent,var(--star-color));border-radius:100%;filter:drop-shadow(0 0 5px var(--star-color));animation:shoot-across var(--duration) ease-in forwards}
+.shooting-star::after{content:'';position:absolute;right:0;top:-1px;width:4px;height:4px;border-radius:50%;background:#fff;box-shadow:0 0 9px var(--star-color)}
+@keyframes shoot-across{0%{opacity:0;transform:translate(0,0) rotate(32deg)}15%{opacity:.85}70%{opacity:.7}100%{opacity:0;transform:translate(55vw,34vw) rotate(32deg)}}
+@media(prefers-reduced-motion:reduce){.shooting-stars{display:none}}
