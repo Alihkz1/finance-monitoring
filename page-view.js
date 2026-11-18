@@ -1,7 +1,7 @@
 (() => {
   const page = new URLSearchParams(location.search).get('page');
   const recordsPage = page === 'records';
-  const monthlyPage = page === 'monthly';
+  const monthlyPage = false; // گزارش ماهانه فعلاً غیرفعال است
   const timelinePage = /^\/timeline(?:\/|$)/.test(location.pathname) || page === 'timeline';
   const subpage = recordsPage || monthlyPage || timelinePage;
 
@@ -13,10 +13,10 @@
   document.getElementById('actual-records-panel').hidden = !recordsPage;
 
   const navigation = document.getElementById('records-navigation');
-  navigation.href = subpage ? '/' : '/app/index.html?page=records';
-  navigation.textContent = subpage ? 'بازگشت به برنامه‌ریز' : 'اطلاعات ثبت‌شده';
+  navigation.href = '/app/index.html?page=records';
+  navigation.textContent = 'اطلاعات ثبت‌شده';
 
-  document.getElementById('monthly-navigation').hidden = monthlyPage;
+
 
   const recordsBack = document.querySelector('.records-page-heading .page-link');
   if (recordsBack) recordsBack.hidden = true;
@@ -25,8 +25,10 @@
   document.querySelector('.overview').hidden = subpage;
   document.querySelector('.layout').hidden = subpage;
   document.getElementById('records-page').hidden = !recordsPage;
-  document.getElementById('monthly-page').hidden = !monthlyPage;
+
   document.getElementById('timeline-page').hidden = !timelinePage;
+  if(!subpage)document.getElementById('home-navigation').setAttribute('aria-current','page');
+  if(recordsPage)navigation.setAttribute('aria-current','page');
   if(timelinePage)document.getElementById('timeline-navigation').setAttribute('aria-current','page');
   document.title = timelinePage ? 'مسیر مالی | کش زیاد' : monthlyPage ? 'گزارش ماهانه | کش زیاد' : recordsPage ? 'اطلاعات ثبت‌شده | کش زیاد' : 'کش زیاد | برنامه‌ریز پس‌انداز';
 })();

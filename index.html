@@ -27,8 +27,8 @@
   <div class="moon-clouds" aria-hidden="true"><span class="moon-cloud back"></span><span
       class="moon-cloud front"></span></div>
   <main class="container">
-    <div class="data-toolbar"><button id="actual-open" type="button" class="quiet">خرج واقعی روزانه</button><a id="timeline-navigation" class="quiet page-link" href="/timeline">مسیر مالی</a><a id="monthly-navigation" class="quiet page-link" href="/app/index.html?page=monthly">گزارش ماهانه</a><button id="import" class="quiet">بازیابی فایل</button><input id="backup-file" type="file" accept="application/json,.json" hidden><a id="records-navigation" class="quiet page-link" href="/app/index.html?page=records">اطلاعات ثبت‌شده</a><a class="quiet landing-entry" href="/landing">دربارهٔ کش زیاد</a><button id="more-open" type="button" class="quiet" aria-haspopup="menu" aria-expanded="false" aria-controls="more-menu">more</button></div>
-<div id="more-menu" class="more-menu" popover="manual" role="menu" aria-label="more"><button id="export" type="button" role="menuitem">دریافت فایل</button><button id="delete-all" type="button" role="menuitem" class="delete-all">حذف همهٔ اطلاعات</button></div>
+    <div class="data-toolbar"><button id="actual-open" type="button" class="quiet">خرجای امروز</button><a id="timeline-navigation" class="quiet page-link" href="/timeline">مسیر مالی</a><a id="home-navigation" class="quiet page-link" href="/">خانه</a><a id="records-navigation" class="quiet page-link" href="/app/index.html?page=records">اطلاعات ثبت‌شده</a><button id="more-open" type="button" class="quiet" aria-haspopup="menu" aria-expanded="false" aria-controls="more-menu">بیشتر</button></div>
+<div id="more-menu" class="more-menu" popover="manual" role="menu" aria-label="بیشتر"><button id="export" type="button" role="menuitem">دریافت فایل</button><button id="import" type="button" role="menuitem">بازیابی فایل</button><input id="backup-file" type="file" accept="application/json,.json" hidden><button id="delete-all" type="button" role="menuitem" class="delete-all">حذف همهٔ اطلاعات</button></div>
     <!-- <section id="filter-controls" class="filter-panel"><div class="tools-heading"><h2>جست‌وجو و فیلتر</h2><button id="scenario-open" class="quiet" type="button">اگر این خرید را انجام بدهم…</button></div><div class="filter-row"><div><label for="filter-query">عنوان</label><input id="filter-query" type="search" placeholder="جست‌وجوی عنوان…"></div><div><label for="filter-type">نوع</label><select id="filter-type"><option value="all">همه</option><option value="income">درآمد</option><option value="expense">هزینه</option><option value="bank">قسط بانکی</option></select></div><div><label for="filter-status">وضعیت</label><select id="filter-status"><option value="all">همه</option><option value="done">تأییدشده</option><option value="pending">تأییدنشده</option></select></div></div><div class="filter-dates"><div><label><input id="filter-from" type="checkbox">از تاریخ</label><div id="filter-from-date" class="date-picker" aria-label="شروع بازه"></div></div><div><label><input id="filter-to" type="checkbox">تا تاریخ</label><div id="filter-to-date" class="date-picker" aria-label="پایان بازه"></div></div><button id="filter-reset" class="quiet">پاک کردن فیلتر</button></div><p id="filter-summary"></p><p id="filter-error" role="status"></p></section> -->
     <section class="overview" aria-label="خلاصه مالی">
       <article class="balance"><span>پس‌انداز در تاریخ مبنا</span>
@@ -163,7 +163,8 @@
       <h2>خرج‌های واقعی روزانه</h2>
       <div id="actual-days-list" class="records"></div>
     </section>
-    <section id="monthly-page" hidden>
+    <!-- گزارش ماهانه فعلاً غیرفعال است
+<section id="monthly-page" hidden>
       <div class="records-page-heading">
         <div>
           <p class="eyebrow">تصویر ماه‌به‌ماه</p>
@@ -195,7 +196,8 @@
         </section>
       </div>
     </section>
-  <section id="timeline-page" hidden><div class="records-page-heading"><h1>مسیر مالی</h1><a class="quiet page-link" href="/">بازگشت به داشبورد</a></div><div class="content"><section class="panel forecast">
+  -->
+<section id="timeline-page" hidden><div class="records-page-heading"><h1>مسیر مالی</h1><a class="quiet page-link" href="/">بازگشت به داشبورد</a></div><div class="content"><section class="panel forecast">
           <div class="section-top">
             <div>
               <p class="eyebrow">مسیر مالی شما</p>
@@ -217,7 +219,7 @@
 </main>
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
   <dialog id="actual-dialog">
-          <h2>خرج واقعی روزانه</h2>
+          <h2>خرجای امروز</h2>
           <p class="actual-note">مجموع خریدهای روزانه را ثبت کنید؛ مبلغ این روز جای سقف تخمینی می‌نشیند. هزینه‌ها و
             اقساطی را که جدا ثبت کرده‌اید دوباره وارد نکنید. روز بدون خرج را صفر ثبت کنید. ثبت در خود روز مبنا هم مجاز است؛ مبلغ آن روز مستقیماً از موجودی کم می‌شود.</p>
           <form id="actual-form" novalidate><label for="actual-amount">مجموع خرج روز به تومان</label><input
