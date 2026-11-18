@@ -1,0 +1,23 @@
+@font-face {
+  font-family: Vazirmatn;
+  src: url('fonts/Vazirmatn.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+:root { font-family: Vazirmatn, Tahoma, sans-serif; font-size: 15px; }
+body { line-height: 1.85; }
+button, input, select, textarea { font-family: inherit; }
+.overview strong { font-family: inherit; letter-spacing: -.6px; line-height: 1.6; }
+h1, h2, h3 { font-weight: 650; }
+label { font-size: 14px; }
+label em, .field-note, .footnote { font-size: 12px; }
+.date-picker select, .quiet, .primary { font-size: 14px; }
+.identity p, .overview article > span, .overview small { font-size: 13px; }
+.explanation, .insight, .payment-line, .record p { font-size: 14px; }
+.payment-head, .day-cost, .payment-total { font-size: 13px; }
+input::placeholder { font-size: 13px; }
+@media (max-width:700px) {
+  .overview article > span, .payment-head, .day-cost { font-size: 12px; }
+  .date-picker select { font-size: 13px; }
+}
