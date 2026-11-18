@@ -25,5 +25,5 @@
   document.querySelector('.layout').hidden = subpage;
   document.getElementById('records-page').hidden = !recordsPage;
   document.getElementById('monthly-page').hidden = !monthlyPage;
-  document.title = monthlyPage ? 'گزارش ماهانه | مانده' : recordsPage ? 'اطلاعات ثبت‌شده | مانده' : 'مانده | برنامه‌ریز پس‌انداز';
+  document.title = monthlyPage ? 'گزارش ماهانه | کش زیاد' : recordsPage ? 'اطلاعات ثبت‌شده | کش زیاد' : 'کش زیاد | برنامه‌ریز پس‌انداز';
 })();
