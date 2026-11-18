@@ -1,7 +1,7 @@
 (() => {
   const normalize = value => value.replace(/[۰-۹]/g, c => String(c.charCodeAt(0) - 1776)).replace(/[٠-٩]/g, c => String(c.charCodeAt(0) - 1632));
   const group = value => value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-  for (const id of ['savings', 'daily', 'expense-amount', 'loan-amount', 'income-amount', 'edit-amount']) {
+  for (const id of ['savings', 'daily', 'expense-amount', 'loan-amount', 'income-amount', 'edit-amount', 'actual-amount', 'scenario-amount']) {
     const input = document.getElementById(id);
     function format() {
       const before = input.value;
