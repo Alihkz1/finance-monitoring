@@ -11,7 +11,7 @@
 </head>
 <body>
   <main class="container">
-    <div class="data-toolbar"><div class="backup"><button id="export" class="quiet">دریافت پشتیبان</button><button id="import" class="quiet">بازیابی پشتیبان</button><input id="backup-file" type="file" accept="application/json,.json" hidden></div><button id="delete-all" type="button" class="delete-all">حذف همهٔ اطلاعات</button></div>
+    <div class="data-toolbar"><div class="backup"><button id="export" class="quiet">دریافت پشتیبان</button><button id="import" class="quiet">بازیابی پشتیبان</button><input id="backup-file" type="file" accept="application/json,.json" hidden></div><a class="quiet page-link" href="index.html?page=records">اطلاعات ثبت‌شده</a><button id="delete-all" type="button" class="delete-all">حذف همهٔ اطلاعات</button></div>
     <section class="overview" aria-label="خلاصه مالی"><article class="balance"><span>پس‌انداز در تاریخ مبنا</span><strong id="balance-value">۰</strong><small>تومان <span id="baseline-label"></span></small></article><article><span>خرج مجاز روزانه</span><strong id="daily-value">۰</strong><small>تومان در روز</small></article><article><span>جمع اقساط باقی‌مانده</span><strong id="loans-value">۰</strong><small id="loans-count">۰ قسط</small></article><article><span>مانده پس از آخرین پرداخت</span><strong id="final-value">—</strong><small id="final-label">هنوز پرداختی ثبت نشده</small></article></section>
     <div class="layout">
       <aside class="forms">
@@ -22,16 +22,20 @@
       </aside>
       <div class="content">
         <section class="panel forecast"><div class="section-top"><div><p class="eyebrow">مسیر مالی شما</p><h2>پس از هر دریافت و پرداخت چقدر می‌ماند؟</h2></div><span class="pill" id="event-count">۰ پرداخت</span></div><p class="explanation">مانده = پس‌انداز مبنا + درآمدهای دریافتی تا این تاریخ − خرج روزانهٔ روزهای سپری‌شده − هزینه‌ها و اقساط تا همین تاریخ.</p><div class="event-legend" aria-label="راهنمای رنگ رویدادها"><span class="income">درآمد · افزایش موجودی</span><span class="expense">هزینه · کاهش موجودی</span><span class="bank">قسط بانکی · کاهش موجودی</span></div><div class="insight" id="insight"></div><div id="timeline" class="timeline"></div><div id="empty" class="empty"><span aria-hidden="true">＋</span><h3>اولین رویداد مالی را اضافه کنید</h3><p>درآمد، هزینه یا قسط بانکی ثبت کنید تا ماندهٔ هر تاریخ مشخص شود.</p></div><button id="show-more" class="quiet load-more" hidden>نمایش رویدادهای بیشتر</button></section>
-        <section class="panel"><div class="section-top"><h2>وام‌های ثبت‌شده</h2><span class="pill" id="bank-count">۰ وام</span></div><div id="loans-list" class="records"></div></section>
-        <section class="panel"><div class="section-top"><h2>هزینه‌های ثبت‌شده</h2><span class="pill" id="expense-count">۰ هزینه</span></div><div id="expenses-list" class="records"></div></section>
-        <section class="panel"><div class="section-top"><h2>درآمدهای ثبت‌شده</h2><span class="pill" id="income-count">۰ درآمد</span></div><div id="incomes-list" class="records"></div></section>
         <footer class="footnote"><span id="save-state">ذخیره در همین مرورگر و همین دستگاه</span><p>فقط درآمدهایی که ثبت کرده‌اید در موجودی لحاظ می‌شوند؛ سود خودکار محاسبه نمی‌شود. پرداخت‌ها برنامه‌ریزی‌شده‌اند و خودکار حذف یا تسویه نمی‌شوند. پاک‌کردن داده‌های مرورگر، اطلاعات را حذف می‌کند؛ فایل پشتیبان را نگه دارید.</p></footer>
       </div>
     </div>
+    <section id="records-page" hidden><div class="records-page-heading"><div><p class="eyebrow">مدیریت اطلاعات</p><h1>اطلاعات ثبت‌شده</h1></div><a class="quiet page-link" href="index.html">بازگشت به برنامه‌ریز</a></div><div class="content records-page-grid">        <section class="panel"><div class="section-top"><h2>وام‌های ثبت‌شده</h2><span class="pill" id="bank-count">۰ وام</span></div><div id="loans-list" class="records"></div></section>
+
+        <section class="panel"><div class="section-top"><h2>هزینه‌های ثبت‌شده</h2><span class="pill" id="expense-count">۰ هزینه</span></div><div id="expenses-list" class="records"></div></section>
+
+        <section class="panel"><div class="section-top"><h2>درآمدهای ثبت‌شده</h2><span class="pill" id="income-count">۰ درآمد</span></div><div id="incomes-list" class="records"></div></section>
+</div></section>
   </main>
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
   <dialog id="confirm-dialog"><form method="dialog"><h2 id="confirm-title">حذف رکورد</h2><p>این مورد از برنامه و محاسبات حذف می‌شود.</p><div class="dialog-actions"><button value="cancel" class="quiet">انصراف</button><button value="delete" class="danger">حذف</button></div></form></dialog>
   <dialog id="delete-all-dialog"><form method="dialog"><h2>حذف همهٔ اطلاعات؟</h2><p>پس‌انداز، خرج روزانه، هزینه‌ها، درآمدها و تمام اقساط بانکی پاک می‌شوند. این عملیات قابل بازگشت نیست؛ برای نگه‌داری اطلاعات ابتدا پشتیبان بگیرید.</p><div class="dialog-actions"><button value="cancel" class="quiet" autofocus>انصراف</button><button value="delete-all" class="danger">حذف همهٔ اطلاعات</button></div></form></dialog>
+  <script src="page-view.js"></script>
   <script src="planner.js"></script><script src="app.js"></script>
   <script src="amount-format.js"></script>
 <script src="date-dropdown.js"></script>
