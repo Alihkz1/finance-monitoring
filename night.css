@@ -1,5 +1,6 @@
 :root{color-scheme:dark;--green:#7f9ff3;--muted:#a5afcc;--line:#b6c8ff1a;background:#0b1025;color:#e6eaff}
 .payment-line .income-amount{color:#9cddc0;direction:ltr;unicode-bidi:isolate}
+.data-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap}.delete-all{background:#da797512;color:#f2a6a0;border:1px solid #ed93882e;padding:9px 13px;font-size:12px}.delete-all:hover{background:#da797525}
 body{background:radial-gradient(ellipse at 80% 2%,#35407855,transparent 48%),radial-gradient(ellipse at 5% 65%,#41306935,transparent 45%),#0b1025;min-height:100vh;isolation:isolate}
 body::before{content:'';position:fixed;inset:0;z-index:-2;pointer-events:none;background-image:radial-gradient(1.5px 1.5px at 15px 22px,#dbe6ffd9 90%,transparent),radial-gradient(1px 1px at 83px 112px,#d2ddff88 90%,transparent),radial-gradient(1px 1px at 156px 65px,#dbe6ff66 90%,transparent),radial-gradient(2px 2px at 230px 185px,#dbe6ff88 90%,transparent);background-size:277px 241px,337px 293px,211px 187px,493px 397px}
 body::after{content:'';position:fixed;top:45px;left:8%;width:106px;height:106px;border-radius:50%;background:radial-gradient(circle at 33% 28%,#fffdf2,#d9e3ff 60%,#9eafdc);box-shadow:0 0 45px #b7ccff25,0 0 110px #a9baff1f;z-index:-1;pointer-events:none;opacity:.8}

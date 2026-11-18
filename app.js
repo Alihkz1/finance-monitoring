@@ -24,4 +24,12 @@ $('settings-form').onsubmit=e=>{e.preventDefault();try{const next={...state,savi
 ['expense','loan','income'].forEach(kind=>{$(kind+'-form').onsubmit=e=>{e.preventDefault();try{const title=$(kind+'-title').value.trim(),amount=num($(kind+'-amount').value),date=readDate(kind+'-date'),k={expense:'expenses',loan:'loans',income:'incomes'}[kind];if(!title||!amount)throw Error('عنوان و مبلغ بیشتر از صفر وارد کنید.');const x={id:Date.now().toString()+Math.random(),title,amount,date};if(kind==='loan')x.months=num($('loan-months').value);const next={...state,[k]:[...state[k],x]};if(!valid(next))throw Error('تاریخ باید از مبنا به بعد باشد؛ تعداد اقساط ۱ تا ۳۶۰ و تعداد رکوردهای هر بخش حداکثر ۲۰۰ است.');if(save(next)){$(kind+'-form').reset();picker(kind+'-date',date);toast('با موفقیت ثبت شد.')}}catch(e){toast(e.message,true)}}});
 $('show-more').onclick=()=>{visible+=30;render()};
 $('export').onclick=()=>{const url=URL.createObjectURL(new Blob([JSON.stringify(state,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='mandeh-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
-$('import').onclick=()=>$('backup-file').click();$('backup-file').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{if(file.size>1000000)throw Error();const s=normalize(JSON.parse(await file.text()));if(!valid(s))throw Error();if(!confirm('اطلاعات فعلی با فایل پشتیبان جایگزین شود؟'))return;if(save(s)){fillSettings();toast('پشتیبان با موفقیت بازیابی شد.')}}catch{toast('فایل پشتیبان معتبر نیست.',true)}finally{e.target.value=''}};render();
+$('import').onclick=()=>$('backup-file').click();$('backup-file').onchange=async e=>{const file=e.target.files[0];if(!file)return;try{if(file.size>1000000)throw Error();const s=normalize(JSON.parse(await file.text()));if(!valid(s))throw Error();if(!confirm('اطلاعات فعلی با فایل پشتیبان جایگزین شود؟'))return;if(save(s)){fillSettings();toast('پشتیبان با موفقیت بازیابی شد.')}}catch{toast('فایل پشتیبان معتبر نیست.',true)}finally{e.target.value=''}};
+$('delete-all').onclick=()=>{$('delete-all-dialog').showModal()};
+$('delete-all-dialog').addEventListener('close',()=>{
+ if($('delete-all-dialog').returnValue!=='delete-all')return;
+ try{localStorage.removeItem(key)}catch{toast('حذف اطلاعات انجام نشد؛ مجوز ذخیره‌سازی مرورگر را بررسی کنید.',true);return}
+ state={savings:0,daily:0,base:today,expenses:[],loans:[],incomes:[]};visible=30;
+ fillSettings();['expense','loan','income'].forEach(kind=>{$(kind+'-form').reset();picker(kind+'-date',today)});
+ render();$('save-state').textContent='اطلاعات این برنامه پاک شد.';toast('تمام اطلاعات برنامه حذف شد.');
+});render();
