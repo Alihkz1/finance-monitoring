@@ -12,7 +12,7 @@
   document.getElementById('actual-records-panel').hidden = !recordsPage;
 
   const navigation = document.querySelector('.data-toolbar > .page-link');
-  navigation.href = subpage ? 'index.html' : 'index.html?page=records';
+  navigation.href = subpage ? '/app/index.html' : '/app/index.html?page=records';
   navigation.textContent = subpage ? 'بازگشت به برنامه‌ریز' : 'اطلاعات ثبت‌شده';
 
   document.getElementById('monthly-navigation').hidden = monthlyPage;

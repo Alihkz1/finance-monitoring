@@ -2,283 +2,178 @@
 <html lang="fa" dir="rtl">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#0b1025">
-  <title>مانده | برنامه‌ریز پس‌انداز</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="typography.css">
-  <link rel="stylesheet" href="night.css">
-  <link rel="stylesheet" href="date-dropdown.css">
-  <link rel="stylesheet" href="readability.css">
-  <link rel="stylesheet" href="shooting-stars.css">
-  <link rel="stylesheet" href="moon.css">
-  <link rel="stylesheet" href="features.css">
-  <link rel="stylesheet" href="planning-tools.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#0b1025">
+    <meta name="description"
+        content="مانده؛ برنامه‌ریزی پس‌انداز، درآمد، هزینه و اقساط با تقویم شمسی. امروز را ببین، برای فردا تصمیم بگیر.">
+    <title>مانده | فردای پولت را روشن ببین</title>
+    <link rel="stylesheet" href="typography.css">
+    <link rel="stylesheet" href="landing.css">
+    <link rel="stylesheet" href="shooting-stars.css">
+    <link rel="stylesheet" href="moon.css">
 </head>
 
 <body>
-  <div class="moon-clouds" aria-hidden="true"><span class="moon-cloud back"></span><span
-      class="moon-cloud front"></span></div>
-  <main class="container">
-    <div class="data-toolbar">
-      <div class="backup"><button id="export" class="quiet">دریافت فایل</button><a id="monthly-navigation"
-          class="quiet page-link" href="index.html?page=monthly">گزارش ماهانه</a><button id="import"
-          class="quiet">بازیابی فایل</button><input id="backup-file" type="file" accept="application/json,.json" hidden>
-      </div><a class="quiet page-link" href="index.html?page=records">اطلاعات ثبت‌شده</a><button id="delete-all"
-        type="button" class="delete-all">حذف همهٔ اطلاعات</button>
-    </div>
-    <p id="backup-reminder" class="backup-reminder" role="status"></p>
-    <!-- <section id="filter-controls" class="filter-panel"><div class="tools-heading"><h2>جست‌وجو و فیلتر</h2><button id="scenario-open" class="quiet" type="button">اگر این خرید را انجام بدهم…</button></div><div class="filter-row"><div><label for="filter-query">عنوان</label><input id="filter-query" type="search" placeholder="جست‌وجوی عنوان…"></div><div><label for="filter-type">نوع</label><select id="filter-type"><option value="all">همه</option><option value="income">درآمد</option><option value="expense">هزینه</option><option value="bank">قسط بانکی</option></select></div><div><label for="filter-status">وضعیت</label><select id="filter-status"><option value="all">همه</option><option value="done">تأییدشده</option><option value="pending">تأییدنشده</option></select></div></div><div class="filter-dates"><div><label><input id="filter-from" type="checkbox">از تاریخ</label><div id="filter-from-date" class="date-picker" aria-label="شروع بازه"></div></div><div><label><input id="filter-to" type="checkbox">تا تاریخ</label><div id="filter-to-date" class="date-picker" aria-label="پایان بازه"></div></div><button id="filter-reset" class="quiet">پاک کردن فیلتر</button></div><p id="filter-summary"></p><p id="filter-error" role="status"></p></section> -->
-    <section class="overview" aria-label="خلاصه مالی">
-      <article class="balance"><span>پس‌انداز در تاریخ مبنا</span>
-        <div class="summary-amount"><strong id="balance-value">۰</strong><span class="currency-badge">تومان</span></div>
-        <small id="baseline-label"></small>
-      </article>
-      <article><span>خرج مجاز روزانه</span>
-        <div class="summary-amount"><strong id="daily-value">۰</strong><span class="currency-badge">تومان</span></div>
-        <small>در روز</small>
-      </article>
-      <article><span>جمع اقساط باقی‌مانده</span>
-        <div class="summary-amount"><strong id="loans-value">۰</strong><span class="currency-badge">تومان</span></div>
-        <small id="loans-count">۰ قسط</small>
-      </article>
-      <article><span>مانده پس از آخرین رویداد</span>
-        <div class="summary-amount"><strong id="final-value">—</strong><span class="currency-badge">تومان</span></div>
-        <small id="final-label">هنوز رویدادی ثبت نشده</small>
-      </article>
-      <article class="upcoming-income"><span>درآمدهای کسب‌نشده</span>
-        <div class="summary-amount"><strong id="pending-income-value">۰</strong><span
-            class="currency-badge">تومان</span></div><small id="pending-income-count">درآمدهای با تاریخ دریافت بعد از
-          امروز</small>
-      </article>
-    </section>
-    <section class="today-panel">
-      <div><span>موجودی امروز</span><small id="today-date"></small></div>
-      <div class="summary-amount"><strong id="today-value">۰</strong><span class="currency-badge">تومان</span></div>
-      <p>پس‌انداز مبنا + درآمدهای تأییدشده − پرداخت‌های تأییدشده − خرج روزانه تا امروز. تاریخ دریافت یا پرداخت واقعی،
-        روز تأیید است.</p>
-    </section>
-    <div class="layout">
-      <aside class="forms">
-        <section class="panel">
-          <div class="panel-title"><span class="step">۰۱</span>
-            <h2>نقطهٔ شروع</h2>
-          </div>
-          <form id="settings-form" novalidate><label for="savings">پس‌انداز فعلی <em>تومان</em></label><input
-              id="savings" inputmode="numeric" placeholder="مثلاً ۵۰٬۰۰۰٬۰۰۰" autocomplete="off" required><label
-              for="daily">خرج مجاز روزانه <em>تومان</em></label><input id="daily" inputmode="numeric"
-              placeholder="مثلاً ۲۰۰٬۰۰۰" autocomplete="off" required><label id="base-date-label">تاریخ مبنای
-              پس‌انداز</label>
-            <div id="base-date" class="date-picker" role="group" aria-labelledby="base-date-label"></div>
-            <p class="field-note">پس‌انداز را موجودی این روز وارد کنید. خرج روزانه از روز بعد از مبنا کسر می‌شود؛ مبلغ
-              واقعی هر روز جایگزین برآورد آن روز می‌شود.</p><button type="submit" class="primary">ذخیرهٔ مبنای
-              محاسبه</button>
-          </form>
+    <div class="moon-clouds" aria-hidden="true"><span class="moon-cloud back"></span><span
+            class="moon-cloud front"></span></div>
+    <a class="skip" href="#main">رفتن به محتوا</a>
+    <header class="landing-nav shell"><a class="wordmark" href="./"><span class="brand-caption">برنامه‌ریز
+                مالی شخصی</span></a>
+        <nav aria-label="منوی اصلی"><a href="#features">امکانات</a><a href="#how">روش کار</a></nav><a class="button secondary compact" href="/app/index.html">ورود به برنامه <span
+                aria-hidden="true">↗</span></a>
+    </header>
+    <main id="main">
+        <section class="hero shell">
+            <div class="hero-copy">
+                <p class="eyebrow"><span></span>برای تصمیم‌های روشن‌تر</p>
+                <h1>قبل از خرج کردن،<br>ببین چقدر <span>می‌ماند.</span></h1>
+                <p class="lead">از پس‌انداز امروز تا قسط ماه بعد؛ درآمدها و پرداخت‌هایت را کنار هم ببین و بدان در هر
+                    تاریخ، چه مبلغی برایت باقی می‌ماند.</p>
+                <div class="hero-actions"><a class="button primary" href="/app/index.html">شروع برنامه‌ریزی <span
+                            aria-hidden="true">←</span></a><a class="subtle-link" href="#features">آشنایی با امکانات
+                        ↓</a></div>
+                <p class="hero-note">بدون ثبت‌نام · تقویم شمسی · قابل استفاده بدون اینترنت</p>
+            </div>
+            <div class="preview" aria-label="نمونهٔ نمایشی مسیر مالی">
+                <div class="preview-top"><span class="preview-dots"
+                        aria-hidden="true"><i></i><i></i><i></i></span><span>یک نگاه به آینده</span><span
+                        class="demo-label">نمونهٔ نمایشی</span></div>
+                <div class="preview-balance"><span>پس‌انداز در تاریخ مبنا</span>
+                    <div>۲۵٬۰۰۰٬۰۰۰ <small>تومان</small></div>
+                    <p>۱ آذر ۱۴۰۵ · خرج روزانه ۱۰۰٬۰۰۰ تومان</p>
+                </div>
+                <div class="preview-date">۵ آذر ۱۴۰۵</div>
+                <div class="demo-row income"><span class="demo-icon" aria-hidden="true">↓</span>
+                    <div><span class="badge">درآمد</span>
+                        <h3>واریز حقوق</h3>
+                    </div><strong>+ ۱۵٬۰۰۰٬۰۰۰<small>تومان</small></strong>
+                </div>
+                <div class="demo-row bank"><span class="demo-icon" aria-hidden="true">↑</span>
+                    <div><span class="badge">قسط بانکی</span>
+                        <h3>قسط وام · ۳ از ۱۲</h3>
+                    </div><strong>− ۳٬۰۰۰٬۰۰۰<small>تومان</small></strong>
+                </div>
+                <div class="demo-row expense"><span class="demo-icon" aria-hidden="true">↑</span>
+                    <div><span class="badge">هزینه</span>
+                        <h3>اجارهٔ خانه</h3>
+                    </div><strong>− ۷٬۰۰۰٬۰۰۰<small>تومان</small></strong>
+                </div>
+                <div class="demo-daily">خرج روزانه تا این تاریخ <b>۴۰۰٬۰۰۰ تومان</b></div>
+                <div class="demo-total"><span>مانده پس از رویدادهای این روز</span><strong>۲۹٬۶۰۰٬۰۰۰
+                        <small>تومان</small></strong></div>
+            </div>
         </section>
-        <section class="panel">
-          <div class="panel-title"><span class="step">۰۲</span>
-            <h2 id="expense-heading">هزینهٔ پیش رو</h2>
-          </div>
-          <form id="expense-form" novalidate><label for="expense-title">عنوان هزینه</label><input id="expense-title"
-              maxlength="100" placeholder="مثلاً اجاره، خرید لپ‌تاپ" required><label for="expense-amount">مبلغ
-              <em>تومان</em></label><input id="expense-amount" inputmode="numeric" placeholder="۰" required><label
-              id="expense-date-label">تاریخ پرداخت شمسی</label>
-            <div id="expense-date" class="date-picker" role="group" aria-labelledby="expense-date-label"></div>
-            <div class="form-actions"><button id="expense-submit" type="submit" class="primary">افزودن
-                هزینه</button><button id="expense-cancel" type="button" class="quiet" hidden>لغو ویرایش</button></div>
-          </form>
+        <div class="principles shell"><span>یک مسیر، تمام دریافت‌ها و پرداخت‌ها</span><i
+                aria-hidden="true"></i><span>مبلغ‌ها به تومان</span><i aria-hidden="true"></i><span>تمام دریافت‌ها و پرداخت‌ها، یک‌جا</span></div>
+        <section class="section shell" id="features">
+            <div class="section-heading">
+                <p class="eyebrow">جزئیات کمتر از چشم می‌افتند</p>
+                <h2>هر عدد، سر جای خودش.</h2>
+                <p>میان پولی که داری، پولی که منتظرشی و پرداختی که در راه است، تفاوت هست. مانده این تفاوت را روشن
+                    می‌کند.</p>
+            </div>
+            <div class="feature-grid">
+                <article class="feature income-feature"><span class="feature-label">۰۱ / دریافت‌ها</span>
+                    <h3>درآمد آینده، موجودی امروز نیست.</h3>
+                    <p>درآمدت را با تاریخ دریافت ثبت کن. تا وقتی «دریافت شد» را نزده‌ای، در فهرست درآمدهای کسب‌نشده
+                        می‌ماند؛ حتی اگر موعدش گذشته باشد.</p>
+                    <div class="feature-detail"><span class="status-dot"></span>برنامه‌ریزی‌شده ← دریافت‌شده</div>
+                </article>
+                <article class="feature bank-feature"><span class="feature-label">۰۲ / اقساط</span>
+                    <h3>تمام قسط‌ها، بدون حساب ذهنی.</h3>
+                    <p>مبلغ، اولین سررسید و تعداد ماه‌های باقی‌مانده را وارد کن. هر قسط در ماه خودش حساب می‌شود و
+                        می‌توانی پرداخت هر کدام را جدا تأیید کنی.</p>
+                    <div class="mini-installments" aria-hidden="true"><span>۱</span><span>۲</span><span
+                            class="current">۳</span><span>۴</span><span>۵</span><span>…</span></div>
+                </article>
+                <article class="feature expense-feature"><span class="feature-label">۰۳ / خرج روزانه</span>
+                    <h3>بودجهٔ روزانه، نزدیک‌تر به واقعیت.</h3>
+                    <p>یک سقف روزانه برای پیش‌بینی مشخص کن؛ بعد، مجموع خرج واقعی روز را بنویس تا جای برآورد همان روز
+                        بنشیند. روز بدون خرج؟ صفر ثبت کن.</p>
+                    <div class="feature-detail">برآورد روزانه <span aria-hidden="true">→</span> مبلغ واقعی همان روز
+                    </div>
+                </article>
+                <article class="feature"><span class="feature-label">۰۴ / نمای امروز</span>
+                    <h3>آنچه داری، کنار آنچه خواهی داشت.</h3>
+                    <p>موجودی امروز بر اساس تراکنش‌های تأییدشده و خرج روزانه محاسبه می‌شود. مسیر مالی، دریافت‌ها و
+                        پرداخت‌های آینده را هم در نظر می‌گیرد.</p>
+                    <div class="feature-detail blue">امروز واقعی‌تر؛ فردا قابل پیش‌بینی‌تر.</div>
+                </article>
+                <article class="feature"><span class="feature-label">۰۵ / گزارش ماهانه</span>
+                    <h3>ماهت را یک‌جا مرور کن.</h3>
+                    <p>درآمد، هزینه، اقساط، خرج روزانه و ماندهٔ پیش‌بینی‌شدهٔ پایان هر ماه شمسی در جدولی جدا و خوانا
+                        کنار هم قرار می‌گیرند.</p><a class="inline-link" href="/app/index.html?page=monthly">رفتن به گزارش
+                        ماهانه ←</a>
+                </article>
+                <article class="feature"><span class="feature-label">۰۶ / مدیریت اطلاعات</span>
+                    <h3>جزئیات تغییر می‌کنند؛ برنامه هم همین‌طور.</h3>
+                    <p>عنوان، مبلغ و تاریخ رکوردها را ویرایش کن؛ وضعیت پرداخت را تأیید یا لغو کن و اقساط پرداخت‌نشده را
+                        از پرداخت‌های واقعی تشخیص بده.</p><a class="inline-link" href="/app/index.html?page=records">دیدن
+                        اطلاعات ثبت‌شده ←</a>
+                </article>
+            </div>
         </section>
-        <section class="panel">
-          <div class="panel-title"><span class="step">۰۳</span>
-            <h2 id="loan-heading">اقساط بانکی</h2>
-          </div>
-          <form id="loan-form" novalidate><label for="loan-title">عنوان وام یا بانک</label><input id="loan-title"
-              maxlength="100" placeholder="مثلاً وام بانک ملت" required>
-            <div class="two-fields">
-              <div><label for="loan-amount">مبلغ هر قسط <em>تومان</em></label><input id="loan-amount"
-                  inputmode="numeric" placeholder="۰" required></div>
-              <div><label for="loan-months">ماه‌های باقی‌مانده</label><input id="loan-months" inputmode="numeric"
-                  placeholder="مثلاً ۱۲" required></div>
-            </div><label id="loan-date-label">تاریخ اولین قسط باقی‌مانده</label>
-            <div id="loan-date" class="date-picker" role="group" aria-labelledby="loan-date-label"></div>
-            <p class="field-note">هر ماه یک قسط؛ تعداد ماه‌ها شامل اولین قسط است. روزهای ناموجود به آخرین روز ماه منتقل
-              می‌شوند.</p>
-            <div class="form-actions"><button id="loan-submit" type="submit" class="primary">افزودن
-                اقساط</button><button id="loan-cancel" type="button" class="quiet" hidden>لغو ویرایش</button></div>
-          </form>
-        </section>
-        <section class="panel">
-          <div class="panel-title"><span class="step">۰۴</span>
-            <h2>درآمد پیش رو</h2>
-          </div>
-          <form id="income-form" novalidate><label for="income-title">عنوان درآمد</label><input id="income-title"
-              maxlength="100" placeholder="مثلاً حقوق، پاداش یا طلب" required><label for="income-amount">مبلغ دریافتی
-              <em>تومان</em></label><input id="income-amount" inputmode="numeric" placeholder="۰" required><label
-              id="income-date-label">تاریخ دریافت شمسی</label>
-            <div id="income-date" class="date-picker" role="group" aria-labelledby="income-date-label"></div>
-            <p class="field-note">این مبلغ فقط از تاریخ دریافت در محاسبات موجودی لحاظ می‌شود.</p>
-            <div class="form-actions"><button type="submit" class="primary">افزودن درآمد</button></div>
-          </form>
-        </section>
-        <section class="panel">
-          <h2>خرج واقعی روزانه</h2>
-          <p class="actual-note">مجموع خریدهای روزانه را ثبت کنید؛ مبلغ این روز جای سقف تخمینی می‌نشیند. هزینه‌ها و
-            اقساطی را که جدا ثبت کرده‌اید دوباره وارد نکنید. روز بدون خرج را صفر ثبت کنید.</p>
-          <form id="actual-form" novalidate><label for="actual-amount">مجموع خرج روز به تومان</label><input
-              id="actual-amount" inputmode="numeric" placeholder="۰"><label>تاریخ روز</label>
-            <div id="actual-date" class="date-picker" aria-label="تاریخ خرج واقعی"></div><button class="primary"
-              type="submit" style="margin-top:16px">ثبت خرج واقعی</button>
-          </form>
-        </section>
-      </aside>
-      <div class="content">
-        <section class="panel forecast">
-          <div class="section-top">
+        <section class="section shell how" id="how">
             <div>
-              <p class="eyebrow">مسیر مالی شما</p>
-              <h2>پس از هر دریافت و پرداخت چقدر می‌ماند؟</h2>
-            </div><span class="pill" id="event-count">۰ پرداخت</span>
-          </div>
-          <p class="explanation">مانده = پس‌انداز مبنا + درآمدهای دریافتی تا این تاریخ − خرج روزانهٔ روزهای سپری‌شده −
-            هزینه‌ها و اقساط تا همین تاریخ.</p>
-          <div class="event-legend" aria-label="راهنمای رنگ رویدادها"><span class="income">درآمد · افزایش
-              موجودی</span><span class="expense">هزینه · کاهش موجودی</span><span class="bank">قسط بانکی · کاهش
-              موجودی</span></div>
-          <div class="insight" id="insight"></div>
-          <div id="timeline" class="timeline"></div>
-          <div id="empty" class="empty"><span aria-hidden="true">＋</span>
-            <h3>اولین رویداد مالی را اضافه کنید</h3>
-            <p>درآمد، هزینه یا قسط بانکی ثبت کنید تا ماندهٔ هر تاریخ مشخص شود.</p>
-          </div><button id="show-more" class="quiet load-more" hidden>نمایش رویدادهای بیشتر</button>
+                <p class="eyebrow">سه قدم ساده</p>
+                <h2>از «چقدر دارم؟»<br>تا «چقدر می‌ماند؟»</h2><a class="button secondary" href="/app/index.html">برنامه‌ام را
+                    می‌سازم ←</a>
+            </div>
+            <ol class="steps">
+                <li><span>۱</span>
+                    <div>
+                        <h3>نقطهٔ شروع را مشخص کن</h3>
+                        <p>پس‌انداز، تاریخ مبنا و خرج مجاز روزانه را وارد کن.</p>
+                    </div>
+                </li>
+                <li><span>۲</span>
+                    <div>
+                        <h3>رویدادهای مالی را بچین</h3>
+                        <p>درآمدها، هزینه‌ها و اقساط را با تاریخ شمسی اضافه کن.</p>
+                    </div>
+                </li>
+                <li><span>۳</span>
+                    <div>
+                        <h3>با اطلاعات تازه تصمیم بگیر</h3>
+                        <p>ماندهٔ هر تاریخ را ببین، تراکنش‌ها را تأیید کن و خرج واقعی روزت را ثبت کن.</p>
+                    </div>
+                </li>
+            </ol>
         </section>
-
-        <footer class="footnote"><span id="save-state">ذخیره در همین مرورگر و همین دستگاه</span>
-          <p>مسیر مالی شامل تراکنش‌های واقعی و برنامه‌ریزی‌شده است؛ هر رکورد فقط یک بار حساب می‌شود. موجودی امروز فقط
-            تأییدها را لحاظ می‌کند و خرج روزانه همواره برآوردی است. پاک‌کردن داده‌های مرورگر، اطلاعات را حذف می‌کند؛
-            فایل را نگه دارید.</p>
-        </footer>
-      </div>
-    </div>
-    <section id="records-page" hidden>
-      <div class="records-page-heading">
-        <div>
-          <p class="eyebrow">مدیریت اطلاعات</p>
-          <h1>اطلاعات ثبت‌شده</h1>
-        </div><a class="quiet page-link" href="index.html">بازگشت به برنامه‌ریز</a>
-      </div>
-      <div class="content records-page-grid">
-        <section class="panel">
-          <div class="section-top">
-            <h2>وام‌های ثبت‌شده</h2><span class="pill" id="bank-count">۰ وام</span>
-          </div>
-          <div id="loans-list" class="records"></div>
+        
+        <section class="section shell faq">
+            <div class="section-heading">
+                <p class="eyebrow">پیش از شروع</p>
+                <h2>چند نکتهٔ روشن.</h2>
+            </div>
+            
+            <details>
+                <summary>اگر هنوز درآمدم را نگرفته باشم چه می‌شود؟</summary>
+                <p>درآمد در پیش‌بینی تاریخ دریافت لحاظ می‌شود، ولی تا تأیید دریافت در موجودی امروز حساب نمی‌شود. تاریخ
+                    واقعی دریافت، روزی است که آن را تأیید می‌کنی.</p>
+            </details>
+            <details>
+                <summary>خرج واقعی روزانه چطور حساب می‌شود؟</summary>
+                <p>جای برآورد همان روز می‌نشیند، نه اینکه دوباره به آن اضافه شود. هزینه و قسطی را که جدا ثبت کرده‌ای در
+                    خرج روزانه تکرار نکن.</p>
+            </details>
+            <details>
+                <summary>آیا مانده به حساب بانکی وصل است؟</summary>
+                <p>خیر. ثبت اطلاعات و تأیید پرداخت‌ها دستی است. مانده ابزار برنامه‌ریزی و پیش‌بینی است و تراکنش بانکی
+                    انجام نمی‌دهد.</p>
+            </details>
         </section>
-
-        <section class="panel">
-          <div class="section-top">
-            <h2>هزینه‌های ثبت‌شده</h2><span class="pill" id="expense-count">۰ هزینه</span>
-          </div>
-          <div id="expenses-list" class="records"></div>
+        <section class="shell final-cta">
+            <p class="eyebrow">یک شروع کوچک، یک تصویر روشن‌تر</p>
+            <h2>برای فردای پولت،<br>امروز برنامه داشته باش.</h2><a class="button primary" href="/app/index.html">ورود به
+                مانده <span aria-hidden="true">←</span></a>
+            <p>بدون نصب، بدون ثبت‌نام.</p>
         </section>
-
-        <section class="panel">
-          <div class="section-top">
-            <h2>درآمدهای ثبت‌شده</h2><span class="pill" id="income-count">۰ درآمد</span>
-          </div>
-          <div id="incomes-list" class="records"></div>
-        </section>
-      </div>
-    </section>
-    <section id="actual-records-panel" class="panel" style="margin-top:24px">
-      <h2>خرج‌های واقعی روزانه</h2>
-      <div id="actual-days-list" class="records"></div>
-    </section>
-    <section id="monthly-page" hidden>
-      <div class="records-page-heading">
-        <div>
-          <p class="eyebrow">تصویر ماه‌به‌ماه</p>
-          <h1>گزارش ماهانه</h1>
-        </div>
-      </div>
-      <div class="content">
-        <section class="panel">
-          <div class="section-top">
-            <h2>گزارش ماهانه</h2><span class="pill">تومان</span>
-          </div>
-          <p class="explanation">جمع واقعی و برنامه‌ریزی‌شده با هم؛ ماندهٔ پیش‌بینی‌شده در پایان کامل هر ماه، شامل خرج
-            روزانه تا آخر ماه است.</p>
-          <div class="monthly-scroll">
-            <table class="monthly-table">
-              <thead>
-                <tr>
-                  <th>ماه شمسی</th>
-                  <th>درآمد</th>
-                  <th>هزینه</th>
-                  <th>اقساط</th>
-                  <th>خرج روزانه</th>
-                  <th>ماندهٔ پایان ماه</th>
-                </tr>
-              </thead>
-              <tbody id="monthly-body"></tbody>
-            </table>
-          </div><button id="monthly-more" class="quiet load-more" hidden>ماه‌های بیشتر</button>
-        </section>
-      </div>
-    </section>
-  </main>
-  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
-  <dialog id="confirm-dialog">
-    <form method="dialog">
-      <h2 id="confirm-title">حذف رکورد</h2>
-      <p>این مورد از برنامه و محاسبات حذف می‌شود.</p>
-      <div class="dialog-actions"><button value="cancel" class="quiet">انصراف</button><button value="delete"
-          class="danger">حذف</button></div>
-    </form>
-  </dialog>
-  <dialog id="delete-all-dialog">
-    <form method="dialog">
-      <h2>حذف همهٔ اطلاعات؟</h2>
-      <p>پس‌انداز، خرج روزانه، هزینه‌ها، درآمدها و تمام اقساط بانکی پاک می‌شوند. این عملیات قابل بازگشت نیست؛ برای
-        نگه‌داری اطلاعات ابتدا فایل بگیرید.</p>
-      <div class="dialog-actions"><button value="cancel" class="quiet" autofocus>انصراف</button><button
-          value="delete-all" class="danger">حذف همهٔ اطلاعات</button></div>
-    </form>
-  </dialog>
-  <dialog id="edit-dialog">
-    <form id="edit-form" novalidate>
-      <h2>ویرایش رکورد</h2><label for="edit-title">عنوان</label><input id="edit-title" maxlength="100" required><label
-        for="edit-amount">مبلغ به تومان</label><input id="edit-amount" inputmode="numeric" required>
-      <div id="edit-months-field"><label for="edit-months">تعداد ماه‌ها</label><input id="edit-months"
-          inputmode="numeric"></div><label id="edit-date-label">تاریخ شمسی</label>
-      <div id="edit-date" class="date-picker" role="group" aria-labelledby="edit-date-label"></div>
-      <p id="edit-note" class="field-note"></p>
-      <div class="dialog-actions"><button id="edit-cancel" type="button" class="quiet">انصراف</button><button
-          type="submit" class="primary">ذخیره تغییرات</button></div>
-    </form>
-  </dialog>
-  <dialog id="scenario-dialog">
-    <form id="scenario-form" novalidate>
-      <h2>شبیه‌سازی خرید</h2>
-      <p class="actual-note">بدون تغییر یا ذخیره در اطلاعات اصلی، اثر یک خرید را بررسی کنید.</p><label
-        for="scenario-title">عنوان خرید</label><input id="scenario-title" maxlength="100"
-        placeholder="مثلاً خرید گوشی"><label for="scenario-amount">مبلغ به تومان</label><input id="scenario-amount"
-        inputmode="numeric"><label>تاریخ خرید</label>
-      <div id="scenario-date" class="date-picker" aria-label="تاریخ خرید فرضی"></div>
-      <div class="tools-actions"><button type="submit" class="primary">محاسبهٔ اثر خرید</button><button
-          id="scenario-close" type="button" class="quiet">بستن</button></div>
-      <div id="scenario-result" aria-live="polite"></div>
-    </form>
-  </dialog>
-  <script src="page-view.js"></script>
-  <script src="planner.js"></script>
-  <script src="finance.js"></script>
-  <script src="app.js"></script>
-  <script src="features.js"></script>
-  <script src="planning-tools.js"></script>
-  <script src="amount-format.js"></script>
-  <script src="date-dropdown.js"></script>
-  <script src="shooting-stars.js"></script>
+    </main>
+    <footer class="shell landing-footer"><a class="wordmark" href="./">مانده</a><span>با آگاهی خرج
+            کن.</span><a href="/app/index.html">باز کردن برنامه ←</a></footer>
+    <script src="shooting-stars.js"></script>
 </body>
 
 </html>

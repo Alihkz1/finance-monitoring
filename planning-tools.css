@@ -105,4 +105,4 @@
     .filter-panel {
         padding: 16px
     }
-}
+}.landing-entry{display:inline-flex;align-items:center;text-decoration:none;border-radius:10px}

@@ -10,10 +10,13 @@
     menu.style.top = `${r.bottom + 7}px`;
     menu.style.left = `${Math.max(8, Math.min(r.left, innerWidth - r.width - 8))}px`;
     menu.style.width = `${r.width}px`;
+    menu.style.maxHeight = `${Math.max(44, Math.min(200, innerHeight - r.bottom - 15))}px`;
   }
   function open(select) {
     if (active === select) { close(); return; }
-    close(); active = select; select.setAttribute('aria-expanded', 'true');
+    close();
+    if (select.getBoundingClientRect().bottom > innerHeight - 120) select.scrollIntoView({block:'center',behavior:'instant'});
+    active = select; select.setAttribute('aria-expanded', 'true');
     menu = document.createElement('div');
     menu.className = 'date-options'; menu.setAttribute('role', 'listbox');
     menu.setAttribute('aria-label', select.getAttribute('aria-label') || 'تاریخ');
@@ -22,17 +25,18 @@
       const button = document.createElement('button');
       button.type = 'button'; button.textContent = option.text;
       button.setAttribute('role', 'option');
-      button.setAttribute('aria-selected', String(option.selected));
-      button.tabIndex = option.selected ? 0 : -1;
+      const selected = option.value === select.value;
+      button.setAttribute('aria-selected', String(selected));
+      button.tabIndex = selected ? 0 : -1;
       button.onclick = () => {
         const field = select.parentElement, index = [...field.children].indexOf(select);
         select.value = option.value;
         select.dispatchEvent(new Event('change', { bubbles: true }));
-        close(); field.children[index]?.focus();
+        close(); field.children[index]?.focus({preventScroll:true});
       };
       menu.append(button);
     });
-    document.body.append(menu); place();
+    (select.closest('dialog') || document.body).append(menu); place();
     const selected = menu.querySelector('[aria-selected="true"]');
     menu.scrollTop = selected.offsetTop - menu.clientHeight / 2 + selected.offsetHeight / 2;
     selected.focus({ preventScroll: true });
@@ -47,13 +51,18 @@
     };
   }
   document.addEventListener('pointerdown', event => {
-    const select = event.target.closest('.date-picker select');
+    const select = event.target.closest('.date-picker .date-trigger');
     if (select) { event.preventDefault(); open(select); }
     else if (menu && !menu.contains(event.target)) close();
   });
   document.addEventListener('keydown', event => {
-    if (event.target.matches('.date-picker select') && ['Enter', ' ', 'ArrowDown', 'ArrowUp'].includes(event.key)) { event.preventDefault(); open(event.target); }
+    if (event.target.matches('.date-picker .date-trigger') && ['Enter', ' ', 'ArrowDown', 'ArrowUp'].includes(event.key)) { event.preventDefault(); open(event.target); }
   });
   window.addEventListener('resize', close);
   window.addEventListener('scroll', event => { if (menu && !menu.contains(event.target)) close(); }, true);
+  document.addEventListener('close', close, true);
+  document.addEventListener('click', event => {
+    const trigger=event.target.closest('.date-picker .date-trigger');
+    if(trigger){event.preventDefault();if(!menu&&event.detail===0)open(trigger)}
+  });
 })();
