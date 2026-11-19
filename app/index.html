@@ -74,7 +74,7 @@
               placeholder="مثلاً ۲۰۰٬۰۰۰" autocomplete="off" required><label id="base-date-label">تاریخ مبنای
               پس‌انداز</label>
             <div id="base-date" class="date-picker" role="group" aria-labelledby="base-date-label"></div>
-            <p class="field-note">پس‌انداز را موجودی این روز وارد کنید. خرج روزانه از روز بعد از مبنا کسر می‌شود؛ مبلغ
+            <p class="field-note">پس‌انداز را موجودی فعلی پس از خرج‌های انجام‌شدهٔ این روز وارد کنید. خرج روزانه از روز بعد از مبنا کسر می‌شود؛ مبلغ
               واقعی هر روز جایگزین برآورد آن روز می‌شود.</p><button type="submit" class="primary">ذخیرهٔ مبنای
               محاسبه</button>
           </form>
@@ -219,13 +219,13 @@
             <p>درآمد، هزینه یا قسط بانکی ثبت کنید تا ماندهٔ هر تاریخ مشخص شود.</p>
           </div><button id="show-more" class="quiet load-more" hidden>نمایش رویدادهای بیشتر</button>
         </section></div></section>
-<section id="spending-page" hidden><header class="spent-heading"><div><p class="eyebrow">دفتر خرج‌های شما</p><h1>خرج‌های انجام‌شده</h1></div><div class="spent-summary"><strong><span id="spent-total">۰</span> تومان</strong><span id="spent-count">۰ خرج</span></div></header><div class="spent-layout"><section class="panel spent-form-panel"><h2>ثبت خرج</h2><form id="spent-form" novalidate><label for="spent-title">عنوان</label><input id="spent-title" maxlength="100" placeholder="مثلاً خرید نان یا تاکسی" required><label for="spent-amount">هزینه به تومان</label><input id="spent-amount" inputmode="numeric" placeholder="مبلغ را وارد کنید" required><label id="spent-date-label">تاریخ دقیق شمسی</label><div id="spent-date" class="date-picker" role="group" aria-labelledby="spent-date-label"></div><p>جمع ریزخرج‌های هر روز جای برآورد روزانهٔ همان روز می‌نشیند. هزینه یا قسطی که جدا ثبت کرده‌اید، اینجا دوباره وارد نکنید. روزهای قبل از مبنا فقط در این دفتر ثبت می‌شوند.</p><div class="spent-actions"><button id="spent-submit" type="submit" class="primary">ثبت خرج</button><button id="spent-cancel" type="button" class="quiet" hidden>لغو ویرایش</button></div></form></section><div id="spent-months" class="spent-months"></div></div></section>
+<section id="spending-page" hidden><header class="spent-heading"><div><p class="eyebrow">دفتر خرج‌های شما</p><h1>خرج‌های انجام‌شده</h1></div><div class="spent-summary"><strong><span id="spent-total">۰</span> تومان</strong><span id="spent-count">۰ خرج</span></div></header><div class="spent-layout"><section class="panel spent-form-panel"><h2>ثبت خرج</h2><form id="spent-form" novalidate><label for="spent-title">عنوان</label><input id="spent-title" maxlength="100" placeholder="مثلاً خرید نان یا تاکسی" required><label for="spent-amount">هزینه به تومان</label><input id="spent-amount" inputmode="numeric" placeholder="مبلغ را وارد کنید" required><label id="spent-date-label">تاریخ دقیق شمسی</label><div id="spent-date" class="date-picker" role="group" aria-labelledby="spent-date-label"></div><p>جمع ریزخرج‌های هر روز جای برآورد روزانهٔ همان روز می‌نشیند. هزینه یا قسطی که جدا ثبت کرده‌اید، اینجا دوباره وارد نکنید. خرج‌های روز مبنا و قبل از آن فقط در این دفتر ثبت می‌شوند و از موجودی مبنا کم نمی‌شوند.</p><div class="spent-actions"><button id="spent-submit" type="submit" class="primary">ثبت خرج</button><button id="spent-cancel" type="button" class="quiet" hidden>لغو ویرایش</button></div></form></section><div id="spent-months" class="spent-months"></div></div></section>
 </main>
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
   <dialog id="actual-dialog">
           <h2>خرجای امروز</h2>
           <p class="actual-note">مجموع خریدهای روزانه را ثبت کنید؛ مبلغ این روز جای سقف تخمینی می‌نشیند. هزینه‌ها و
-            اقساطی را که جدا ثبت کرده‌اید دوباره وارد نکنید. روز بدون خرج را صفر ثبت کنید. ثبت در خود روز مبنا هم مجاز است؛ مبلغ آن روز مستقیماً از موجودی کم می‌شود.</p>
+            اقساطی را که جدا ثبت کرده‌اید دوباره وارد نکنید. روز بدون خرج را صفر ثبت کنید. خرج روز مبنا قابل ثبت است، اما چون در موجودی مبنا لحاظ شده، دوباره از موجودی کم نمی‌شود.</p>
           <form id="actual-form" novalidate><label for="actual-amount">مجموع خرج روز به تومان</label><input
               id="actual-amount" inputmode="numeric" placeholder="مبلغ را وارد کنید"><label>تاریخ روز</label>
             <div id="actual-date" class="date-picker" aria-label="تاریخ خرج واقعی"></div><button class="primary"
