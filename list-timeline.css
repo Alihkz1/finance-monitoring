@@ -1,0 +1,19 @@
+/* One continuous rail between visible records, with a colored node per item. */
+.records{gap:16px;padding-right:29px}
+.records .record{--node:#ee92a0;position:relative;overflow:visible;border-right-width:1px!important;border-right-color:#3c4b65!important}
+.records .record-incomes{--node:#63d6a2}.records .record-loans{--node:#e9bd66}.records .record-expenses{--node:#ee92a0}
+.records .record::before{content:'';position:absolute;right:-23px;top:27px;bottom:-43px;width:2px;border-radius:5px;background:linear-gradient(var(--node),#435676);opacity:.7;pointer-events:none}
+.records .record::after{content:'';position:absolute;right:-28px;top:22px;width:12px;height:12px;border-radius:50%;background:var(--node);box-shadow:0 0 0 4px #172339,0 0 0 5px color-mix(in srgb,var(--node) 28%,transparent);pointer-events:none}
+.records .record:nth-last-child(1 of .record:not([hidden]))::before{display:none}
+.timeline .payment{overflow:visible}
+.timeline .payment-line{--node:#a9c6ff;position:relative;margin-right:44px;border-right-width:1px!important;border-right-color:#41516c!important;overflow:visible}
+.timeline .payment-line.event-income{--node:#63d6a2;border-right-color:#2d6552!important}.timeline .payment-line.event-expense{--node:#ee92a0;border-right-color:#62404c!important}.timeline .payment-line.event-bank{--node:#e9bd66;border-right-color:#655338!important}
+.timeline .payment-line::before{content:'';position:absolute;right:-28px;top:29px;bottom:-39px;width:2px;border-radius:4px;background:linear-gradient(var(--node),#435676);opacity:.75;pointer-events:none}
+.timeline .payment-line::after{content:'';position:absolute;right:-33px;top:24px;width:12px;height:12px;border-radius:50%;background:var(--node);box-shadow:0 0 0 4px #19243b,0 0 0 5px color-mix(in srgb,var(--node) 28%,transparent);pointer-events:none}
+.timeline .payment-line:nth-last-child(1 of .payment-line:not([hidden]))::before{display:none}
+.payment-head{border-radius:13px 13px 0 0}.payment-total{border-radius:0 0 13px 13px}
+.installments{padding-right:24px}.installments summary{margin-right:-24px}.installment{position:relative;--node:#e9bd66}.installment:has(.status-done){--node:#63d6a2}
+.installment::before{content:'';position:absolute;right:-18px;top:27px;bottom:-27px;width:2px;background:#536079;border-radius:4px;pointer-events:none}
+.installment::after{content:'';position:absolute;right:-21px;top:23px;width:8px;height:8px;border-radius:50%;background:var(--node);box-shadow:0 0 0 3px #1a263d;pointer-events:none}
+.installment:last-child::before{display:none}
+@media(max-width:700px){.records{padding-right:23px}.records .record::before{right:-18px}.records .record::after{right:-23px}.timeline .payment-line{margin-right:36px}.timeline .payment-line::before{right:-23px}.timeline .payment-line::after{right:-28px}.records .record::after,.timeline .payment-line::after{width:10px;height:10px;margin-right:1px}}
