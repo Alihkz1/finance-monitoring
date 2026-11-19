@@ -24,13 +24,14 @@
 <link rel="stylesheet" href="spending.css">
 <link rel="stylesheet" href="list-timeline.css">
 <link rel="stylesheet" href="desktop-header.css">
+<link rel="stylesheet" href="without-daily.css">
 </head>
 
 <body>
   <div class="moon-clouds" aria-hidden="true"><span class="moon-cloud back"></span><span
       class="moon-cloud front"></span></div>
   <main class="container">
-    <div class="data-toolbar"><button id="actual-open" type="button" class="quiet">خرجای امروز</button><a id="timeline-navigation" class="quiet page-link" href="/timeline">مسیر مالی</a><a id="home-navigation" class="quiet page-link" href="/">خانه</a><a id="records-navigation" class="quiet page-link" href="/app/index.html?page=records">اطلاعات ثبت‌شده</a><a id="spending-navigation" class="quiet page-link" href="/spending">خرج‌های انجام‌شده</a><button id="more-open" type="button" class="quiet" aria-haspopup="menu" aria-expanded="false" aria-controls="more-menu">بیشتر</button></div>
+    <div class="data-toolbar"><a id="timeline-navigation" class="quiet page-link" href="/timeline">مسیر مالی</a><a id="records-navigation" class="quiet page-link" href="/app/index.html?page=records">اطلاعات ثبت‌شده</a><a id="home-navigation" class="quiet page-link" href="/">خانه</a><a id="spending-navigation" class="quiet page-link" href="/spending">خرج‌های انجام‌شده</a><button id="more-open" type="button" class="quiet" aria-haspopup="menu" aria-expanded="false" aria-controls="more-menu">بیشتر</button></div>
 <div id="more-menu" class="more-menu" popover="manual" role="menu" aria-label="بیشتر"><button id="export" type="button" role="menuitem">دریافت بک آپ</button><button id="import" type="button" role="menuitem">بازیابی فایل</button><input id="backup-file" type="file" accept="application/json,.json" hidden><button id="delete-all" type="button" role="menuitem" class="delete-all">حذف همهٔ اطلاعات</button></div>
     <!-- <section id="filter-controls" class="filter-panel"><div class="tools-heading"><h2>جست‌وجو و فیلتر</h2><button id="scenario-open" class="quiet" type="button">اگر این خرید را انجام بدهم…</button></div><div class="filter-row"><div><label for="filter-query">عنوان</label><input id="filter-query" type="search" placeholder="جست‌وجوی عنوان…"></div><div><label for="filter-type">نوع</label><select id="filter-type"><option value="all">همه</option><option value="income">درآمد</option><option value="expense">هزینه</option><option value="bank">قسط بانکی</option></select></div><div><label for="filter-status">وضعیت</label><select id="filter-status"><option value="all">همه</option><option value="done">تأییدشده</option><option value="pending">تأییدنشده</option></select></div></div><div class="filter-dates"><div><label><input id="filter-from" type="checkbox">از تاریخ</label><div id="filter-from-date" class="date-picker" aria-label="شروع بازه"></div></div><div><label><input id="filter-to" type="checkbox">تا تاریخ</label><div id="filter-to-date" class="date-picker" aria-label="پایان بازه"></div></div><button id="filter-reset" class="quiet">پاک کردن فیلتر</button></div><p id="filter-summary"></p><p id="filter-error" role="status"></p></section> -->
     <section class="overview" aria-label="خلاصه مالی">
@@ -38,10 +39,7 @@
         <div class="summary-amount"><strong id="balance-value">۰</strong><span class="currency-badge">تومان</span></div>
         <small id="baseline-label"></small>
       </article>
-      <article><span>خرج مجاز روزانه</span>
-        <div class="summary-amount"><strong id="daily-value">۰</strong><span class="currency-badge">تومان</span></div>
-        <small>در روز</small>
-      </article>
+      
       <article><span>جمع اقساط باقی‌مانده</span>
         <div class="summary-amount"><strong id="loans-value">۰</strong><span class="currency-badge">تومان</span></div>
         <small id="loans-count">۰ قسط</small>
@@ -59,7 +57,7 @@
     <section class="today-panel">
       <div><span>موجودی امروز</span><small id="today-date"></small></div>
       <div class="summary-amount"><strong id="today-value">۰</strong><span class="currency-badge">تومان</span></div>
-      <p>پس‌انداز مبنا + درآمدهای تأییدشده − پرداخت‌های تأییدشده − خرج روزانه تا امروز. تاریخ دریافت یا پرداخت واقعی،
+      <p>پس‌انداز مبنا + درآمدهای تأییدشده − پرداخت‌های تأییدشده − خرج‌های انجام‌شده پس از مبنا. تاریخ دریافت یا پرداخت واقعی،
         روز تأیید است.</p>
     </section>
     <div class="layout">
@@ -69,13 +67,10 @@
             <h2>نقطهٔ شروع</h2>
           </div>
           <form id="settings-form" novalidate><label for="savings">پس‌انداز فعلی <em>تومان</em></label><input
-              id="savings" inputmode="numeric" placeholder="مثلاً ۵۰٬۰۰۰٬۰۰۰" autocomplete="off" required><label
-              for="daily">خرج مجاز روزانه <em>تومان</em></label><input id="daily" inputmode="numeric"
-              placeholder="مثلاً ۲۰۰٬۰۰۰" autocomplete="off" required><label id="base-date-label">تاریخ مبنای
+              id="savings" inputmode="numeric" placeholder="مثلاً ۵۰٬۰۰۰٬۰۰۰" autocomplete="off" required><label id="base-date-label">تاریخ مبنای
               پس‌انداز</label>
             <div id="base-date" class="date-picker" role="group" aria-labelledby="base-date-label"></div>
-            <p class="field-note">پس‌انداز را موجودی فعلی پس از خرج‌های انجام‌شدهٔ این روز وارد کنید. خرج روزانه از روز بعد از مبنا کسر می‌شود؛ مبلغ
-              واقعی هر روز جایگزین برآورد آن روز می‌شود.</p><button type="submit" class="primary">ذخیرهٔ مبنای
+            <p class="field-note">موجودی فعلی را پس از خرج‌های انجام‌شده وارد کنید. خرج‌های روز مبنا دوباره از این مبلغ کم نمی‌شوند.</p><button type="submit" class="primary">ذخیرهٔ مبنای
               محاسبه</button>
           </form>
         </section>
@@ -162,10 +157,7 @@
         </section>
       </div>
     </section>
-    <section id="actual-records-panel" class="panel" style="margin-top:24px">
-      <h2>خرج‌های واقعی روزانه</h2>
-      <div id="actual-days-list" class="records"></div>
-    </section>
+    
     <!-- گزارش ماهانه فعلاً غیرفعال است
 <section id="monthly-page" hidden>
       <div class="records-page-heading">
@@ -179,8 +171,7 @@
           <div class="section-top">
             <h2>گزارش ماهانه</h2><span class="pill">تومان</span>
           </div>
-          <p class="explanation">جمع واقعی و برنامه‌ریزی‌شده با هم؛ ماندهٔ پیش‌بینی‌شده در پایان کامل هر ماه، شامل خرج
-            روزانه تا آخر ماه است.</p>
+          <p class="explanation">جمع واقعی و برنامه‌ریزی‌شده با هم؛ ماندهٔ پیش‌بینی‌شده در پایان کامل هر ماه، شامل خرج‌های ثبت‌شده تا آخر ماه است.</p>
           <div class="monthly-scroll">
             <table class="monthly-table">
               <thead>
@@ -189,7 +180,7 @@
                   <th>درآمد</th>
                   <th>هزینه</th>
                   <th>اقساط</th>
-                  <th>خرج روزانه</th>
+                  <th>خرج‌های انجام‌شده</th>
                   <th>ماندهٔ پایان ماه</th>
                 </tr>
               </thead>
@@ -207,7 +198,7 @@
               <h2>پس از هر دریافت و پرداخت چقدر می‌ماند؟</h2>
             </div><span class="pill" id="event-count">۰ پرداخت</span>
           </div>
-          <p class="explanation">مانده = پس‌انداز مبنا + درآمدهای دریافتی تا این تاریخ − خرج روزانهٔ روزهای سپری‌شده −
+          <p class="explanation">مانده = پس‌انداز مبنا + درآمدهای دریافتی تا این تاریخ − خرج‌های انجام‌شده پس از مبنا −
             هزینه‌ها و اقساط تا همین تاریخ.</p>
           <div class="event-legend" aria-label="راهنمای رنگ رویدادها"><span class="income">درآمد · افزایش
               موجودی</span><span class="expense">هزینه · کاهش موجودی</span><span class="bank">قسط بانکی · کاهش
@@ -219,19 +210,10 @@
             <p>درآمد، هزینه یا قسط بانکی ثبت کنید تا ماندهٔ هر تاریخ مشخص شود.</p>
           </div><button id="show-more" class="quiet load-more" hidden>نمایش رویدادهای بیشتر</button>
         </section></div></section>
-<section id="spending-page" hidden><header class="spent-heading"><div><p class="eyebrow">دفتر خرج‌های شما</p><h1>خرج‌های انجام‌شده</h1></div><div class="spent-summary"><strong><span id="spent-total">۰</span> تومان</strong><span id="spent-count">۰ خرج</span></div></header><div class="spent-layout"><section class="panel spent-form-panel"><h2>ثبت خرج</h2><form id="spent-form" novalidate><label for="spent-title">عنوان</label><input id="spent-title" maxlength="100" placeholder="مثلاً خرید نان یا تاکسی" required><label for="spent-amount">هزینه به تومان</label><input id="spent-amount" inputmode="numeric" placeholder="مبلغ را وارد کنید" required><label id="spent-date-label">تاریخ دقیق شمسی</label><div id="spent-date" class="date-picker" role="group" aria-labelledby="spent-date-label"></div><p>جمع ریزخرج‌های هر روز جای برآورد روزانهٔ همان روز می‌نشیند. هزینه یا قسطی که جدا ثبت کرده‌اید، اینجا دوباره وارد نکنید. خرج‌های روز مبنا و قبل از آن فقط در این دفتر ثبت می‌شوند و از موجودی مبنا کم نمی‌شوند.</p><div class="spent-actions"><button id="spent-submit" type="submit" class="primary">ثبت خرج</button><button id="spent-cancel" type="button" class="quiet" hidden>لغو ویرایش</button></div></form></section><div id="spent-months" class="spent-months"></div></div></section>
+<section id="spending-page" hidden><header class="spent-heading"><div><p class="eyebrow">دفتر خرج‌های شما</p><h1>خرج‌های انجام‌شده</h1></div><div class="spent-summary"><strong><span id="spent-total">۰</span> تومان</strong><span id="spent-count">۰ خرج</span></div></header><div class="spent-layout"><section class="panel spent-form-panel"><h2>ثبت خرج</h2><form id="spent-form" novalidate><label for="spent-title">عنوان</label><input id="spent-title" maxlength="100" placeholder="مثلاً خرید نان یا تاکسی" required><label for="spent-amount">هزینه به تومان</label><input id="spent-amount" inputmode="numeric" placeholder="مبلغ را وارد کنید" required><label id="spent-date-label">تاریخ دقیق شمسی</label><div id="spent-date" class="date-picker" role="group" aria-labelledby="spent-date-label"></div><p>خرج‌های روز مبنا و قبل از آن در این دفتر باقی می‌مانند، اما از موجودی مبنا کم نمی‌شوند. هزینه یا قسطی را که جدا ثبت کرده‌اید، اینجا دوباره وارد نکنید.</p><div class="spent-actions"><button id="spent-submit" type="submit" class="primary">ثبت خرج</button><button id="spent-cancel" type="button" class="quiet" hidden>لغو ویرایش</button></div></form></section><div id="spent-months" class="spent-months"></div></div></section>
 </main>
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
-  <dialog id="actual-dialog">
-          <h2>خرجای امروز</h2>
-          <p class="actual-note">مجموع خریدهای روزانه را ثبت کنید؛ مبلغ این روز جای سقف تخمینی می‌نشیند. هزینه‌ها و
-            اقساطی را که جدا ثبت کرده‌اید دوباره وارد نکنید. روز بدون خرج را صفر ثبت کنید. خرج روز مبنا قابل ثبت است، اما چون در موجودی مبنا لحاظ شده، دوباره از موجودی کم نمی‌شود.</p>
-          <form id="actual-form" novalidate><label for="actual-amount">مجموع خرج روز به تومان</label><input
-              id="actual-amount" inputmode="numeric" placeholder="مبلغ را وارد کنید"><label>تاریخ روز</label>
-            <div id="actual-date" class="date-picker" aria-label="تاریخ خرج واقعی"></div><button class="primary"
-              type="submit" style="margin-top:16px">ثبت خرج واقعی</button>
-          <button type="button" id="actual-cancel" class="quiet">انصراف</button></form>
-        </dialog>
+  
   <dialog id="confirm-dialog">
     <form method="dialog">
       <h2 id="confirm-title">حذف رکورد</h2>
@@ -243,7 +225,7 @@
   <dialog id="delete-all-dialog">
     <form method="dialog">
       <h2>حذف همهٔ اطلاعات؟</h2>
-      <p>پس‌انداز، خرج روزانه، هزینه‌ها، درآمدها و تمام اقساط بانکی پاک می‌شوند. این عملیات قابل بازگشت نیست؛ برای
+      <p>پس‌انداز، هزینه‌ها، درآمدها و تمام اقساط بانکی پاک می‌شوند. این عملیات قابل بازگشت نیست؛ برای
         نگه‌داری اطلاعات ابتدا فایل بگیرید.</p>
       <div class="dialog-actions"><button value="cancel" class="quiet" autofocus>انصراف</button><button
           value="delete-all" class="danger">حذف همهٔ اطلاعات</button></div>

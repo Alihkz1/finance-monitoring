@@ -11,7 +11,6 @@
   const filterPanel = document.getElementById('filter-controls');
   if (filterPanel) filterPanel.hidden = monthlyPage;
 
-  document.getElementById('actual-records-panel').hidden = !recordsPage;
 
   const navigation = document.getElementById('records-navigation');
   navigation.href = '/app/index.html?page=records';
