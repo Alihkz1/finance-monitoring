@@ -4,6 +4,8 @@
  document.getElementById('actual-open').onclick=()=>{document.getElementById('actual-amount').value='';document.getElementById('actual-dialog').showModal()};
  document.getElementById('actual-cancel').onclick=()=>document.getElementById('actual-dialog').close();
  const dock=document.querySelector('.data-toolbar');
+ const header=document.createElement('header');header.className='app-header';
+ dock.parentNode.insertBefore(header,dock);header.append(dock);
  dock.querySelectorAll('button,a').forEach(button=>{
    const label=button.textContent.trim();
    button.setAttribute('aria-label',label);button.setAttribute('title',label);
@@ -13,7 +15,7 @@
  });
  dock.setAttribute('role','navigation');dock.setAttribute('aria-label','عملیات برنامه');
  const mobile=window.matchMedia('(max-width:700px)');
- function measureDock(){document.documentElement.style.setProperty('--mobile-dock-height',mobile.matches?`${Math.ceil(dock.getBoundingClientRect().height)}px`:'0px')}
- if('ResizeObserver' in window)new ResizeObserver(measureDock).observe(dock);
+ function measureDock(){document.documentElement.style.setProperty('--mobile-dock-height',mobile.matches?`${Math.ceil(dock.getBoundingClientRect().height)}px`:'0px');document.documentElement.style.setProperty('--desktop-header-height',mobile.matches?'0px':`${Math.ceil(header.getBoundingClientRect().height)}px`)}
+ if('ResizeObserver' in window){const observer=new ResizeObserver(measureDock);observer.observe(dock);observer.observe(header)}
  mobile.addEventListener('change',measureDock);window.addEventListener('resize',measureDock);measureDock();
 })();
