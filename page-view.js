@@ -3,7 +3,8 @@
   const recordsPage = page === 'records';
   const monthlyPage = false; // گزارش ماهانه فعلاً غیرفعال است
   const timelinePage = /^\/timeline(?:\/|$)/.test(location.pathname) || page === 'timeline';
-  const subpage = recordsPage || monthlyPage || timelinePage;
+  const spendingPage=/^\/spending(?:\/|$)/.test(location.pathname)||page==='spending';
+  const subpage = recordsPage || monthlyPage || timelinePage || spendingPage;
 
   // The search/filter panel is commented out in index.html, so every lookup of
   // its controls must stay optional instead of throwing on null.
@@ -27,8 +28,10 @@
   document.getElementById('records-page').hidden = !recordsPage;
 
   document.getElementById('timeline-page').hidden = !timelinePage;
+  document.getElementById('spending-page').hidden=!spendingPage;
+  if(spendingPage)document.getElementById('spending-navigation').setAttribute('aria-current','page');
   if(!subpage)document.getElementById('home-navigation').setAttribute('aria-current','page');
   if(recordsPage)navigation.setAttribute('aria-current','page');
   if(timelinePage)document.getElementById('timeline-navigation').setAttribute('aria-current','page');
-  document.title = timelinePage ? 'مسیر مالی | کش زیاد' : monthlyPage ? 'گزارش ماهانه | کش زیاد' : recordsPage ? 'اطلاعات ثبت‌شده | کش زیاد' : 'کش زیاد | برنامه‌ریز پس‌انداز';
+  document.title = spendingPage ? 'خرج‌های انجام‌شده | کش زیاد' : timelinePage ? 'مسیر مالی | کش زیاد' : monthlyPage ? 'گزارش ماهانه | کش زیاد' : recordsPage ? 'اطلاعات ثبت‌شده | کش زیاد' : 'کش زیاد | برنامه‌ریز پس‌انداز';
 })();

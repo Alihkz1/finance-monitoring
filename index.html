@@ -21,14 +21,15 @@
 <link rel="stylesheet" href="message-style.css">
 <link rel="stylesheet" href="mobile-dock.css">
 <link rel="stylesheet" href="more-menu.css">
+<link rel="stylesheet" href="spending.css">
 </head>
 
 <body>
   <div class="moon-clouds" aria-hidden="true"><span class="moon-cloud back"></span><span
       class="moon-cloud front"></span></div>
   <main class="container">
-    <div class="data-toolbar"><button id="actual-open" type="button" class="quiet">خرجای امروز</button><a id="timeline-navigation" class="quiet page-link" href="/timeline">مسیر مالی</a><a id="home-navigation" class="quiet page-link" href="/">خانه</a><a id="records-navigation" class="quiet page-link" href="/app/index.html?page=records">اطلاعات ثبت‌شده</a><button id="more-open" type="button" class="quiet" aria-haspopup="menu" aria-expanded="false" aria-controls="more-menu">بیشتر</button></div>
-<div id="more-menu" class="more-menu" popover="manual" role="menu" aria-label="بیشتر"><button id="export" type="button" role="menuitem">دریافت فایل</button><button id="import" type="button" role="menuitem">بازیابی فایل</button><input id="backup-file" type="file" accept="application/json,.json" hidden><button id="delete-all" type="button" role="menuitem" class="delete-all">حذف همهٔ اطلاعات</button></div>
+    <div class="data-toolbar"><button id="actual-open" type="button" class="quiet">خرجای امروز</button><a id="timeline-navigation" class="quiet page-link" href="/timeline">مسیر مالی</a><a id="home-navigation" class="quiet page-link" href="/">خانه</a><a id="spending-navigation" class="quiet page-link" href="/spending">خرج‌های انجام‌شده</a><button id="more-open" type="button" class="quiet" aria-haspopup="menu" aria-expanded="false" aria-controls="more-menu">بیشتر</button></div>
+<div id="more-menu" class="more-menu" popover="manual" role="menu" aria-label="بیشتر"><a id="records-navigation" href="/app/index.html?page=records" role="menuitem">اطلاعات ثبت‌شده</a><button id="export" type="button" role="menuitem">دریافت فایل</button><button id="import" type="button" role="menuitem">بازیابی فایل</button><input id="backup-file" type="file" accept="application/json,.json" hidden><button id="delete-all" type="button" role="menuitem" class="delete-all">حذف همهٔ اطلاعات</button></div>
     <!-- <section id="filter-controls" class="filter-panel"><div class="tools-heading"><h2>جست‌وجو و فیلتر</h2><button id="scenario-open" class="quiet" type="button">اگر این خرید را انجام بدهم…</button></div><div class="filter-row"><div><label for="filter-query">عنوان</label><input id="filter-query" type="search" placeholder="جست‌وجوی عنوان…"></div><div><label for="filter-type">نوع</label><select id="filter-type"><option value="all">همه</option><option value="income">درآمد</option><option value="expense">هزینه</option><option value="bank">قسط بانکی</option></select></div><div><label for="filter-status">وضعیت</label><select id="filter-status"><option value="all">همه</option><option value="done">تأییدشده</option><option value="pending">تأییدنشده</option></select></div></div><div class="filter-dates"><div><label><input id="filter-from" type="checkbox">از تاریخ</label><div id="filter-from-date" class="date-picker" aria-label="شروع بازه"></div></div><div><label><input id="filter-to" type="checkbox">تا تاریخ</label><div id="filter-to-date" class="date-picker" aria-label="پایان بازه"></div></div><button id="filter-reset" class="quiet">پاک کردن فیلتر</button></div><p id="filter-summary"></p><p id="filter-error" role="status"></p></section> -->
     <section class="overview" aria-label="خلاصه مالی">
       <article class="balance"><span>پس‌انداز در تاریخ مبنا</span>
@@ -216,6 +217,7 @@
             <p>درآمد، هزینه یا قسط بانکی ثبت کنید تا ماندهٔ هر تاریخ مشخص شود.</p>
           </div><button id="show-more" class="quiet load-more" hidden>نمایش رویدادهای بیشتر</button>
         </section></div></section>
+<section id="spending-page" hidden><header class="spent-heading"><div><p class="eyebrow">دفتر خرج‌های شما</p><h1>خرج‌های انجام‌شده</h1></div><div class="spent-summary"><strong><span id="spent-total">۰</span> تومان</strong><span id="spent-count">۰ خرج</span></div></header><div class="spent-layout"><section class="panel spent-form-panel"><h2>ثبت خرج</h2><form id="spent-form" novalidate><label for="spent-title">عنوان</label><input id="spent-title" maxlength="100" placeholder="مثلاً خرید نان یا تاکسی" required><label for="spent-amount">هزینه به تومان</label><input id="spent-amount" inputmode="numeric" placeholder="مبلغ را وارد کنید" required><label id="spent-date-label">تاریخ دقیق شمسی</label><div id="spent-date" class="date-picker" role="group" aria-labelledby="spent-date-label"></div><p>جمع ریزخرج‌های هر روز جای برآورد روزانهٔ همان روز می‌نشیند. هزینه یا قسطی که جدا ثبت کرده‌اید، اینجا دوباره وارد نکنید. روزهای قبل از مبنا فقط در این دفتر ثبت می‌شوند.</p><div class="spent-actions"><button id="spent-submit" type="submit" class="primary">ثبت خرج</button><button id="spent-cancel" type="button" class="quiet" hidden>لغو ویرایش</button></div></form></section><div id="spent-months" class="spent-months"></div></div></section>
 </main>
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
   <dialog id="actual-dialog">
@@ -277,7 +279,8 @@
   <script src="app.js"></script>
   <script src="features.js"></script>
   <script src="planning-tools.js"></script>
-  <script src="amount-format.js"></script>
+  <script src="spending.js"></script>
+<script src="amount-format.js"></script>
   <script src="date-dropdown.js"></script>
   <script src="shooting-stars.js"></script>
 <script src="toolbar.js"></script>

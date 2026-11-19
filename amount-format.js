@@ -2,7 +2,7 @@
   const normalize = value => value.replace(/[۰-۹]/g, c => String(c.charCodeAt(0) - 1776)).replace(/[٠-٩]/g, c => String(c.charCodeAt(0) - 1632));
   const persian = value => value.replace(/[0-9٠-٩]/g, c => '۰۱۲۳۴۵۶۷۸۹'[c.charCodeAt(0) >= 1632 ? c.charCodeAt(0) - 1632 : Number(c)]);
   const group = value => persian(value.replace(/\B(?=(\d{3})+(?!\d))/g, '٬'));
-  for (const id of ['savings', 'daily', 'expense-amount', 'loan-amount', 'income-amount', 'edit-amount', 'actual-amount', 'scenario-amount']) {
+  for (const id of ['savings', 'daily', 'expense-amount', 'loan-amount', 'income-amount', 'edit-amount', 'actual-amount', 'scenario-amount', 'spent-amount']) {
     const input = document.getElementById(id);
     function format() {
       const before = input.value;
