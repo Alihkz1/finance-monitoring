@@ -21,7 +21,6 @@
   const recordsBack = document.querySelector('.records-page-heading .page-link');
   if (recordsBack) recordsBack.hidden = true;
 
-  document.querySelector('.today-panel').hidden = subpage;
   document.querySelector('.overview').hidden = subpage;
   document.querySelector('.layout').hidden = subpage;
   document.getElementById('records-page').hidden = !recordsPage;

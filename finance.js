@@ -1,10 +1,71 @@
 const Finance = (() => {
- function dateOK(d){return Array.isArray(d)&&d.length===3&&d.every(Number.isInteger)&&d[0]>=1200&&d[0]<=1630&&d[1]>=1&&d[1]<=12&&d[2]>=1&&d[2]<=P.days(d[0],d[1])}
- function valid(s){if(!s||!dateOK(s.base)||!Array.isArray(s.expenses)||!Array.isArray(s.loans)||!Array.isArray(s.incomes))return false;if(s.spentItems!==undefined&&(!Array.isArray(s.spentItems)||s.spentItems.length>5000||new Set(s.spentItems.map(x=>x.id)).size!==s.spentItems.length||!s.spentItems.every(x=>typeof x.id==='string'&&typeof x.title==='string'&&x.title.trim().length>0&&x.title.length<=100&&dateOK(x.date)&&Number.isSafeInteger(x.amount)&&x.amount>0&&x.amount<=1e10)))return false;if(s.lastExportAt!==undefined&&(!Number.isFinite(s.lastExportAt)||s.lastExportAt<0||s.lastExportAt>8640000000000000))return false;return [...s.expenses,...s.incomes,...s.loans].every(x=>(x.settledOn===undefined||dateOK(x.settledOn)&&P.ordinal(x.settledOn)>=P.ordinal(s.base))&&(x.paid===undefined||x.paid&&typeof x.paid==='object'&&!Array.isArray(x.paid)&&Object.entries(x.paid).every(([i,d])=>/^\d+$/.test(i)&&+i>=1&&+i<=x.months&&dateOK(d)&&P.ordinal(d)>=P.ordinal(s.base))))}
- function actual(s,date){const ord=P.ordinal(date);let balance=s.savings;for(const e of P.events(s)){if(e.completed&&P.ordinal(e.date)>P.ordinal(s.base)&&P.ordinal(e.date)<=ord)balance+=e.type==='income'?e.amount:-e.amount}return balance-spendingCost(s,P.ordinal(s.base),ord)}
- function monthly(s,date){const events=P.events(s);let year=s.base[0],month=s.base[1];const last=events.at(-1)?.date||s.base,end=P.ordinal(last)>P.ordinal(date)?last:date,rows=[];let cumulative=0;while(year<end[0]||year===end[0]&&month<=end[1]){let income=0,expense=0,loan=0;for(const e of events){if(e.date[0]!==year||e.date[1]!==month)continue;if(e.type==='income')income+=e.amount;else if(e.type==='bank')loan+=e.amount;else expense+=e.amount}const first=Math.max(P.ordinal(s.base),P.ordinal([year,month,1])-1),endDay=P.ordinal([year,month,P.days(year,month)]),spending=spendingCost(s,first,endDay);cumulative+=events.filter(e=>e.date[0]===year&&e.date[1]===month&&!(e.completed&&P.ordinal(e.date)<=P.ordinal(s.base))).reduce((n,e)=>n+(e.type==='income'?e.amount:-e.amount),0);const balance=s.savings+cumulative-spendingCost(s,P.ordinal(s.base),endDay);rows.push({year,month,income,expense,loan,spending,balance});month++;if(month===13){year++;month=1}}return rows}
- function spendingCost(s,from,to){return (s.spentItems||[]).reduce((total,x)=>{const day=P.ordinal(x.date);return total+(day>P.ordinal(s.base)&&day>from&&day<=to?x.amount:0)},0)}
- function projected(s,date){const end=P.ordinal(date),base=P.ordinal(s.base);let result=s.savings;for(const e of P.events(s)){const day=P.ordinal(e.date);if(day<=end&&!(e.completed&&day<=base))result+=e.type==='income'?e.amount:-e.amount}return result-spendingCost(s,base,end)}
- function finalBalance(s){const dates=[...P.events(s).map(e=>e.date),...(s.spentItems||[]).map(x=>x.date)].filter(d=>P.ordinal(d)>=P.ordinal(s.base));if(!dates.length)return null;const date=dates.reduce((a,b)=>P.ordinal(b)>P.ordinal(a)?b:a);return {date,balance:projected(s,date)}}
- return {valid,actual,monthly,spendingCost,projected,finalBalance};
+    const limit = 1e10;
+    function object(x) { return !!x && typeof x === 'object' && !Array.isArray(x); }
+    function dateOK(d, maxYear = 1630) {
+        return Array.isArray(d) && d.length === 3 && d.every(Number.isInteger) && d[0] >= 1200 && d[0] <= maxYear && d[1] >= 1 && d[1] <= 12 && d[2] >= 1 && d[2] <= P.days(d[0], d[1]);
+    }
+    function money(n, zero = false) { return Number.isSafeInteger(n) && n >= (zero ? 0 : 1) && n <= limit; }
+    function valid(s, today) {
+        if (!object(s) || !dateOK(s.base, 1600) || !money(s.savings, true)) return false;
+        const latest = today && dateOK(today) ? P.ordinal(today) : Infinity;
+        function settled(d) { return dateOK(d) && P.ordinal(d) <= latest; }
+        function collection(list, max, kind) {
+            if (!Array.isArray(list) || list.length > max) return false;
+            const ids = new Set();
+            return list.every(x => {
+                if (!object(x) || typeof x.id !== 'string' || !x.id.trim() || ids.has(x.id) || typeof x.title !== 'string' || !x.title.trim() || x.title.length > 100 || !money(x.amount) || !dateOK(x.date, 1600)) return false;
+                ids.add(x.id);
+                if (kind === 'spending') return P.ordinal(x.date) <= latest;
+                if (kind === 'loan') {
+                    if (!Number.isInteger(x.months) || x.months < 1 || x.months > 360 || x.settledOn !== undefined) return false;
+                    if (x.paid === undefined) return true;
+                    return object(x.paid) && Object.entries(x.paid).every(([index, date]) => /^[1-9]\d*$/.test(index) && String(Number(index)) === index && +index <= x.months && settled(date));
+                }
+                return x.paid === undefined && (x.settledOn === undefined || settled(x.settledOn));
+            });
+        }
+        return collection(s.expenses, 200, 'expense') && collection(s.incomes, 200, 'income') && collection(s.loans, 200, 'loan') && (s.spentItems === undefined || collection(s.spentItems, 5000, 'spending'));
+    }
+    function balanceAt(s, date, confirmedOnly = false) {
+        if (P.ordinal(date) < P.ordinal(s.base)) return null;
+        const end = P.ordinal(date);
+        let result = s.savings;
+        for (const event of P.events(s)) {
+            if (P.ordinal(event.date) <= end && P.affects(s, event) && (!confirmedOnly || event.completed)) result += P.delta(event);
+        }
+        return result;
+    }
+    function actual(s, date) { return balanceAt(s, date, true); }
+    function projected(s, date) { return balanceAt(s, date); }
+    function spendingCost(s, from, to) {
+        return (s.spentItems || []).reduce((total, x) => {
+            const day = P.ordinal(x.date);
+            return total + (day > P.ordinal(s.base) && day > from && day <= to ? x.amount : 0);
+        }, 0);
+    }
+    function finalBalance(s) {
+        const last = P.events(s).filter(x => P.ordinal(x.date) >= P.ordinal(s.base)).at(-1);
+        return last ? { date: last.date, balance: projected(s, last.date) } : null;
+    }
+    function monthly(s, date) {
+        const events = P.events(s), last = events.at(-1)?.date || s.base;
+        const end = P.ordinal(last) > P.ordinal(date) ? last : date;
+        const rows = [], buckets = new Map();
+        for (const event of events) {
+            if (!P.affects(s, event)) continue;
+            const key = event.date[0] * 12 + event.date[1];
+            if (!buckets.has(key)) buckets.set(key, { income: 0, expense: 0, loan: 0, spending: 0 });
+            const field = event.source === 'spending' ? 'spending' : event.type === 'income' ? 'income' : event.type === 'bank' ? 'loan' : 'expense';
+            buckets.get(key)[field] += event.amount;
+        }
+        let year = s.base[0], month = s.base[1], balance = s.savings;
+        while (year < end[0] || year === end[0] && month <= end[1]) {
+            const totals = buckets.get(year * 12 + month) || { income: 0, expense: 0, loan: 0, spending: 0 };
+            balance += totals.income - totals.expense - totals.loan - totals.spending;
+            rows.push({ year, month, ...totals, balance });
+            if (++month === 13) { year++; month = 1; }
+        }
+        return rows;
+    }
+    return { valid, dateOK, actual, monthly, spendingCost, projected, finalBalance };
 })();

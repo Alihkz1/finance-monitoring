@@ -8,6 +8,7 @@
       const before = input.value;
       const position = input.selectionStart ?? before.length;
       const digitsBefore = normalize(before.slice(0, position)).replace(/\D/g, '').length;
+      if(!/^[0-9,٬\s]*$/.test(normalize(before))){input.value=persian(before);return;}
       const digits = normalize(before).replace(/\D/g, '');
       input.value = group(digits);
       let cursor = 0, count = 0;
