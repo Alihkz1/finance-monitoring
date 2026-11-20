@@ -14,7 +14,7 @@
 
   const navigation = document.getElementById('records-navigation');
   navigation.href = '/app/index.html?page=records';
-  navigation.textContent = 'اطلاعات ثبت‌شده';
+  navigation.textContent = 'رویداد ها';
 
 
 
