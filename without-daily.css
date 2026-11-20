@@ -1,2 +1,81 @@
 .overview{grid-template-columns:repeat(4,minmax(0,1fr))}@media(max-width:1000px){.overview{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.data-toolbar:has(#records-navigation){display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}.data-toolbar #timeline-navigation{grid-column:1;grid-row:1}.data-toolbar #records-navigation{grid-column:2;grid-row:1}.data-toolbar #home-navigation{grid-column:3;grid-row:1}.data-toolbar #spending-navigation{grid-column:4;grid-row:1}.data-toolbar #more-open{grid-column:5;grid-row:1}.overview .upcoming-income{grid-column:auto}}
+
+/* Desktop dashboard: four entry columns on the right, summaries on the left. */
+@media (min-width:1100px) {
+  .container:has(>.overview:not([hidden])) {
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 210px;
+    grid-template-rows:minmax(0,1fr);
+    gap:16px;
+    max-width:none;
+    height:calc(100dvh - var(--desktop-header-height,88px));
+    padding:18px 24px;
+    box-sizing:border-box;
+  }
+  .container:has(>.overview:not([hidden]))>.overview {
+    grid-column:2;
+    grid-row:1;
+    grid-template-columns:minmax(0,1fr);
+    grid-template-rows:repeat(4,minmax(0,1fr));
+    gap:12px;
+    margin:0;
+    min-height:0;
+  }
+  .container:has(>.overview:not([hidden]))>.layout {
+    grid-column:1;
+    grid-row:1;
+    display:block;
+    min-height:0;
+  }
+  .container:has(>.overview:not([hidden]))>.layout>.content {display:none}
+  .container:has(>.overview:not([hidden])) .forms {
+    height:100%;
+    min-height:0;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    grid-template-rows:minmax(0,1fr);
+    gap:12px;
+  }
+  .container:has(>.overview:not([hidden])) .forms>.panel {
+    padding:18px 12px;
+    min-height:0;
+  }
+  .container:has(>.overview:not([hidden])) .forms .panel-title {margin-bottom:16px;flex-shrink:0}
+  .container:has(>.overview:not([hidden])) .forms form {
+    min-height:0;
+    overflow-y:auto;
+    scrollbar-width:thin;
+    scrollbar-color:#788dbb55 transparent;
+  }
+  .container:has(>.overview:not([hidden])) .forms form>input,
+  .container:has(>.overview:not([hidden])) .forms form>.date-picker,
+  .container:has(>.overview:not([hidden])) .forms form>.two-fields {flex-shrink:0}
+  .container:has(>.overview:not([hidden])) .forms .form-actions,
+  .container:has(>.overview:not([hidden])) #settings-form>.primary {
+    position:sticky;
+    bottom:0;
+    z-index:2;
+    flex-shrink:0;
+  }
+  .container:has(>.overview:not([hidden])) .forms .form-actions {
+    background:#18243b;
+    padding-top:12px;
+    padding-bottom:2px;
+  }
+  .container:has(>.overview:not([hidden])) .forms .form-actions .primary {flex:1;min-width:0}
+  .container:has(>.overview:not([hidden])) .overview article {
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:14px;
+  }
+  .container:has(>.overview:not([hidden])) .overview article>span {margin-bottom:8px}
+  .container:has(>.overview:not([hidden])) .overview strong {font-size:clamp(19px,1.6vw,26px)}
+  .container:has(>.overview:not([hidden])) .overview small {margin-top:5px}
+}
+@media (min-width:1100px) and (max-height:800px) {
+  .container:has(>.overview:not([hidden])) .forms label {margin-top:10px;margin-bottom:5px;font-size:13px}
+  .container:has(>.overview:not([hidden])) .forms .field-note {font-size:11px;line-height:1.8;margin-block:10px}
+  .container:has(>.overview:not([hidden])) .forms .panel-title {margin-bottom:12px}
+  .container:has(>.overview:not([hidden])) .forms .two-fields {gap:0}
+}
