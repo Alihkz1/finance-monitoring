@@ -26,11 +26,11 @@ const Finance = (() => {
         }
         return collection(s.expenses, 200, 'expense') && collection(s.incomes, 200, 'income') && collection(s.loans, 200, 'loan') && (s.spentItems === undefined || collection(s.spentItems, 5000, 'spending'));
     }
-    function balanceAt(s, date, confirmedOnly = false) {
+    function balanceAt(s, date, confirmedOnly = false, eventList = P.events(s)) {
         if (P.ordinal(date) < P.ordinal(s.base)) return null;
         const end = P.ordinal(date);
         let result = s.savings;
-        for (const event of P.events(s)) {
+        for (const event of eventList) {
             if (P.ordinal(event.date) <= end && P.affects(s, event) && (!confirmedOnly || event.completed)) result += P.delta(event);
         }
         return result;
@@ -43,12 +43,12 @@ const Finance = (() => {
             return total + (day > P.ordinal(s.base) && day > from && day <= to ? x.amount : 0);
         }, 0);
     }
-    function finalBalance(s) {
-        const last = P.events(s).filter(x => P.ordinal(x.date) >= P.ordinal(s.base)).at(-1);
-        return last ? { date: last.date, balance: projected(s, last.date) } : null;
+    function finalBalance(s, eventList = P.events(s)) {
+        const last = eventList.filter(x => P.ordinal(x.date) >= P.ordinal(s.base)).at(-1);
+        return last ? { date: last.date, balance: balanceAt(s, last.date, false, eventList) } : null;
     }
-    function monthly(s, date) {
-        const events = P.events(s), last = events.at(-1)?.date || s.base;
+    function monthly(s, date, events = P.events(s)) {
+        const last = events.at(-1)?.date || s.base;
         const end = P.ordinal(last) > P.ordinal(date) ? last : date;
         const rows = [], buckets = new Map();
         for (const event of events) {
@@ -67,5 +67,21 @@ const Finance = (() => {
         }
         return rows;
     }
-    return { valid, dateOK, actual, monthly, spendingCost, projected, finalBalance };
+    // A render shares one ordered event list across every financial view.
+    function snapshot(s, today) {
+        const events = P.events(s);
+        const pending = s.incomes.filter(x => !x.settledOn);
+        const unpaidCount = s.loans.reduce((n, x) => n + x.months - Object.keys(x.paid || {}).length, 0);
+        return {
+            events,
+            groups: P.forecast(s, events),
+            actual: balanceAt(s, today, true, events),
+            final: finalBalance(s, events),
+            pendingCount: pending.length,
+            pendingAmount: pending.reduce((n, x) => n + x.amount, 0),
+            unpaidCount,
+            unpaidAmount: s.loans.reduce((n, x) => n + (x.months - Object.keys(x.paid || {}).length) * x.amount, 0),
+        };
+    }
+    return { valid, dateOK, actual, monthly, spendingCost, projected, finalBalance, snapshot };
 })();

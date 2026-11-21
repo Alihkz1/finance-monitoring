@@ -8,7 +8,7 @@ class Element {
  setAttribute(k,v){this.attrs[k]=v} getAttribute(k){return this.attrs[k]} addEventListener(k,fn){(this.listeners[k]??=[]).push(fn)}
  querySelectorAll(selector){return this.children.flatMap(c=>[...(c.className?.split(' ').includes(selector.slice(1))?[c]:[]),...(c.querySelectorAll?.(selector)||[])])}
  querySelector(selector){return this.querySelectorAll(selector)[0]||null}
- showModal(){this.open=true;this.returnValue=''} close(){this.open=false;for(const fn of this.listeners.close||[])fn();this.onclose?.()}
+ showModal(){this.open=true} close(){this.open=false;for(const fn of this.listeners.close||[])fn();this.onclose?.()}
  reset(){} focus(){} scrollIntoView(){} setSelectionRange(start,end){this.selectionStart=start;this.selectionEnd=end} matches(){return true}click(){this.clicked=true}
 }
 function ui({storage=new Map(),documentName='index.html'}={}){

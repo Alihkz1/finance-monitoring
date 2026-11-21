@@ -38,10 +38,10 @@ const P = (() => {
     }
     function affects(s, event) { return !(event.completed && ordinal(event.date) <= ordinal(s.base)); }
     function delta(event) { return event.type === 'income' ? event.amount : -event.amount; }
-    function forecast(s) {
+    function forecast(s, eventList = events(s)) {
         const groups = [];
         let balance = s.savings, spending = 0;
-        for (const event of events(s)) {
+        for (const event of eventList) {
             let group = groups.at(-1);
             if (!group || ordinal(group.date) !== ordinal(event.date)) {
                 group = { date: event.date, items: [] };

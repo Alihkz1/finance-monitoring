@@ -1,6 +1,6 @@
 const test=require('node:test'),a=require('node:assert/strict'),vm=require('node:vm');const {ui,source,Element}=require('./harness.cjs');
 const KEY='mandeh-planner-v1';
-function prepare(){const app=ui();app.read('save({...state,savings:1000,base:P.parts(P.ordinal(today)-3)})');return app}
+function prepare(){const app=ui();app.read('save({...state,savings:1000,base:P.parts(P.ordinal(today)-3)});fillSettings()');return app}
 function submit(app,id){app.get(id).onsubmit(app.event())}
 function openEdit(app,list,index=0){app.get(list).children[index].querySelector('.record-actions').children.find(x=>x.textContent==='ویرایش').onclick()}
 test('create/confirm/undo income and expense update actual and projected balances and preserve records',()=>{
@@ -12,7 +12,7 @@ test('editing income updates a single ID and confirmation without adding a row',
  const u=prepare();u.read("save({...state,incomes:[{id:'one',title:'one',date:today,amount:200,settledOn:today},{id:'two',title:'two',date:today,amount:300}]})");openEdit(u,'incomes-list');u.get('edit-amount').value='۴۵۰';u.get('edit-title').value='changed';submit(u,'edit-form');a.equal(u.read('state.incomes.length'),2);a.equal(u.read('state.incomes[0].id'),'one');a.equal(u.read('state.incomes[0].amount'),450);a.equal(u.read('Finance.actual(state,today)'),1450);a(u.read('!!state.incomes[0].settledOn'));submit(u,'edit-form');a.equal(u.read('state.incomes.length'),2);
 });
 test('loan installment confirmation is independent; loan editing protects confirmed installment numbers',()=>{
- const u=prepare();u.read("save({...state,loans:[{id:'loan',title:'loan',date:today,amount:100,months:3}],spentItems:[{id:'food',title:'food',date:today,amount:50}]})");let details=u.get('loans-list').children[0].querySelector('.installments');a.equal(details.children.length,4);details.children[2].children[1].onclick();a.equal(u.read('Object.keys(state.loans[0].paid).length'),1);a.equal(u.read('Finance.actual(state,today)'),850);a.equal(u.read('Finance.finalBalance(state).balance'),650);
+ const u=prepare();u.read("save({...state,loans:[{id:'loan',title:'loan',date:today,amount:100,months:3}],spentItems:[{id:'food',title:'food',date:today,amount:50}]})");let details=u.get('loans-list').children[0].querySelector('.installments');a.equal(details.children.length,1);details.open=true;for(const fn of details.listeners.toggle)fn();a.equal(details.children.length,4);details.children[2].children[1].onclick();a.equal(u.read('Object.keys(state.loans[0].paid).length'),1);a.equal(u.read('Finance.actual(state,today)'),850);a.equal(u.read('Finance.finalBalance(state).balance'),650);
  openEdit(u,'loans-list');u.get('edit-months').value='۱';submit(u,'edit-form');a.equal(u.read('state.loans[0].months'),3);a.equal(u.get('edit-dialog').open,true);u.get('edit-months').value='۴';u.get('edit-amount').value='۱۵۰';submit(u,'edit-form');a.equal(u.read('state.loans[0].months'),4);a.equal(u.read('Object.keys(state.loans[0].paid).length'),1);a.equal(u.read('Finance.actual(state,today)'),800);
 });
 test('rebasing to today preserves historic records and resets the baseline snapshot',()=>{
@@ -54,4 +54,41 @@ test('Tehran midnight changes current date and recalculates newly applicable con
  // The invalid future confirmation above is correctly rejected; seed a legal
  // imported future-scheduled unconfirmed record for the date-boundary check.
  u.read('save({...state,base:today,savings:1000,incomes:[{id:"i",title:"i",amount:300,date:P.parts(P.ordinal(today)+1)}]})');const ordinal=u.read('P.ordinal(today)');vm.runInContext(source('current-day.js'),u.context);Clock.nowValue=after;u.fire('focus');a.equal(u.read('P.ordinal(today)'),ordinal+1);a.equal(u.read('Finance.actual(state,today)'),1000);u.get('incomes-list').children[0].querySelector('.record-actions').children[0].onclick();a.equal(u.read('Finance.actual(state,today)'),1300);
+});
+
+
+test('reopening record deletion and dismissing it never reuses the previous approval',()=>{
+ const u=prepare();u.read("save({...state,expenses:[{id:'a',title:'a',amount:10,date:today},{id:'b',title:'b',amount:20,date:today}]})");
+ function removeFirst(){u.get('expenses-list').children[0].querySelector('.record-actions').children.find(x=>x.textContent==='حذف').onclick()}
+ removeFirst();u.get('confirm-dialog').returnValue='delete';u.get('confirm-dialog').close();a.equal(u.read('state.expenses.length'),1);
+ removeFirst();u.get('confirm-dialog').close();a.equal(u.read('state.expenses.length'),1);
+});
+
+test('delete-all approval is not retained when the dialog is dismissed next time',()=>{
+ const u=prepare();u.get('delete-all').onclick();u.get('delete-all-dialog').returnValue='delete-all';u.get('delete-all-dialog').close();
+ u.read('save({...state,savings:700})');u.get('delete-all').onclick();u.get('delete-all-dialog').close();a.equal(u.read('state.savings'),700);
+});
+
+test('baseline form refuses to overwrite a newer baseline received from another tab',()=>{
+ const u=prepare(),remote=JSON.parse(u.storage.get(KEY));remote.savings=3000;u.storage.set(KEY,JSON.stringify(remote));u.fire('storage',{key:KEY});
+ u.get('savings').value='800';submit(u,'settings-form');a.equal(u.read('state.savings'),3000);a.equal(u.get('savings').value,new Intl.NumberFormat('fa-IR').format(3000));
+ u.get('savings').value='800';submit(u,'settings-form');a.equal(u.read('state.savings'),800);
+});
+
+test('backup refuses to export stale state before a remote storage event arrives',()=>{
+ const u=prepare(),remote=JSON.parse(u.storage.get(KEY));remote.savings=3000;u.storage.set(KEY,JSON.stringify(remote));u.get('export').onclick();a.equal(u.exported(),null);
+ u.fire('storage',{key:KEY});u.get('export').onclick();a.ok(u.exported());
+});
+
+test('restoring a file resets ledger edit mode and closes old record editors',async()=>{
+ const u=prepare();u.read("save({...state,spentItems:[{id:'spent',title:'spent',amount:100,date:today}],incomes:[{id:'income',title:'income',amount:200,date:today}]})");
+ u.get('spent-months').children[0].querySelector('.record-actions').children[0].onclick();openEdit(u,'incomes-list');
+ const json=JSON.stringify({savings:500,base:u.read('today'),expenses:[],incomes:[],loans:[]});u.get('backup-file').files=[{size:json.length,text:async()=>json}];await u.get('backup-file').onchange({target:u.get('backup-file')});
+ a.equal(u.get('edit-dialog').open,false);a.equal(u.get('spent-cancel').hidden,true);
+ u.get('spent-title').value='new';u.get('spent-amount').value='50';submit(u,'spent-form');a.equal(u.read('state.spentItems.length'),1);a.notEqual(u.read('state.spentItems[0].id'),'spent');
+});
+
+test('a complete render generates the financial event list once, and unopened loans build no installment controls',()=>{
+ const u=prepare();u.read("save({...state,loans:[{id:'loan',title:'loan',amount:100,date:today,months:360}]});globalThis.eventCalls=0;globalThis.originalEvents=P.events;P.events=(...args)=>{eventCalls++;return originalEvents(...args)};render()");
+ a.equal(u.read('eventCalls'),1);a.equal(u.get('loans-list').children[0].querySelector('.installments').children.length,1);
 });

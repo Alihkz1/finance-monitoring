@@ -1,35 +1,29 @@
 (() => {
-  const page = new URLSearchParams(location.search).get('page');
-  const recordsPage = page === 'records';
-  const monthlyPage = false; // گزارش ماهانه فعلاً غیرفعال است
-  const timelinePage = /^\/timeline(?:\/|$)/.test(location.pathname) || page === 'timeline';
-  const spendingPage=/^\/spending(?:\/|$)/.test(location.pathname)||page==='spending';
-  const subpage = recordsPage || monthlyPage || timelinePage || spendingPage;
-
-  // The search/filter panel is commented out in index.html, so every lookup of
-  // its controls must stay optional instead of throwing on null.
+  const requested = new URLSearchParams(location.search).get('page');
+  const path = location.pathname;
+  // A route owns its view; a query parameter cannot activate a second page.
+  const active = /^\/timeline(?:\/|$)/.test(path) ? 'timeline'
+    : /^\/spending(?:\/|$)/.test(path) ? 'spending'
+    : ['records', 'timeline', 'spending'].includes(requested) ? requested
+    : 'dashboard';
+  const dashboard = active === 'dashboard';
+  document.querySelector('.overview').hidden = !dashboard;
+  document.querySelector('.layout').hidden = !dashboard;
+  for (const page of ['records', 'timeline', 'spending']) {
+    document.getElementById(page + '-page').hidden = active !== page;
+  }
   const filterPanel = document.getElementById('filter-controls');
-  if (filterPanel) filterPanel.hidden = monthlyPage;
-
-
-  const navigation = document.getElementById('records-navigation');
-  navigation.href = '/app/index.html?page=records';
-  navigation.textContent = 'رویداد ها';
-
-
-
+  if (filterPanel) filterPanel.hidden = false;
+  const records = document.getElementById('records-navigation');
+  records.href = '/app/index.html?page=records';
+  records.textContent = 'رویداد ها';
   const recordsBack = document.querySelector('.records-page-heading .page-link');
   if (recordsBack) recordsBack.hidden = true;
-
-  document.querySelector('.overview').hidden = subpage;
-  document.querySelector('.layout').hidden = subpage;
-  document.getElementById('records-page').hidden = !recordsPage;
-
-  document.getElementById('timeline-page').hidden = !timelinePage;
-  document.getElementById('spending-page').hidden=!spendingPage;
-  if(spendingPage)document.getElementById('spending-navigation').setAttribute('aria-current','page');
-  if(!subpage)document.getElementById('home-navigation').setAttribute('aria-current','page');
-  if(recordsPage)navigation.setAttribute('aria-current','page');
-  if(timelinePage)document.getElementById('timeline-navigation').setAttribute('aria-current','page');
-  document.title = spendingPage ? 'خرج‌های انجام‌شده | کش زیاد' : timelinePage ? 'مسیر مالی | کش زیاد' : monthlyPage ? 'گزارش ماهانه | کش زیاد' : recordsPage ? 'اطلاعات ثبت‌شده | کش زیاد' : 'کش زیاد | برنامه‌ریز پس‌انداز';
+  const navigation = active === 'dashboard' ? 'home' : active;
+  document.getElementById(navigation + '-navigation').setAttribute('aria-current', 'page');
+  const titles = {
+    dashboard: 'داشبورد', records: 'رویداد ها', timeline: 'تایم لاین',
+    spending: 'خرج‌های انجام‌شده',
+  };
+  document.title = titles[active] + ' | کش زیاد';
 })();

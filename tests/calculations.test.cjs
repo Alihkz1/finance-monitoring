@@ -57,3 +57,8 @@ test('maximum valid scheduled amounts remain safe integers',()=>{
  const s=base();s.loans=Array.from({length:200},(_,i)=>record('l'+i,1e10,[1405,8,29],{months:360}));s.spentItems=Array.from({length:5000},(_,i)=>record('s'+i,1e10,[1405,8,30]));
  const groups=P.forecast(s);a.equal(P.events(s).length,77000);a.equal(groups.at(-1).balance,1000-72000*1e10-5000*1e10);a.ok(Number.isSafeInteger(groups.at(-1).balance));
 });
+
+test('shared financial snapshot agrees with standalone calculations and excludes received income and paid installments from remaining totals',()=>{
+ const s=base();s.incomes=[record('received',300,[1405,8,29],{settledOn:[1405,8,29]}),record('pending',200,[1405,8,29])];s.loans=[record('loan',100,[1405,8,29],{months:3,paid:{'1':[1405,8,29]}})];
+ const view=F.snapshot(s,[1405,8,30]);a.equal(view.actual,F.actual(s,[1405,8,30]));a.equal(view.final.balance,F.finalBalance(s).balance);a.equal(view.groups.at(-1).balance,view.final.balance);a.equal(view.pendingCount,1);a.equal(view.pendingAmount,200);a.equal(view.unpaidCount,2);a.equal(view.unpaidAmount,200);
+});
