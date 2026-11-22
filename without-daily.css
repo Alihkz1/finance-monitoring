@@ -5,7 +5,7 @@
 @media (min-width:1100px) {
   .container:has(>.overview:not([hidden])) {
     display:grid;
-    grid-template-columns:minmax(0,1fr) 210px;
+    grid-template-columns:minmax(0,1fr) 230.5px;
     grid-template-rows:minmax(0,1fr);
     gap:16px;
     max-width:none;
