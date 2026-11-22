@@ -16,119 +16,139 @@
   <link rel="stylesheet" href="moon.css">
   <link rel="stylesheet" href="features.css">
   <link rel="stylesheet" href="planning-tools.css">
-<link rel="stylesheet" href="controls.css">
-<link rel="stylesheet" href="entry-layout.css">
-<link rel="stylesheet" href="message-style.css">
-<link rel="stylesheet" href="mobile-dock.css">
-<link rel="stylesheet" href="more-menu.css">
-<link rel="stylesheet" href="spending.css">
-<link rel="stylesheet" href="list-timeline.css">
-<link rel="stylesheet" href="desktop-header.css">
-<link rel="stylesheet" href="without-daily.css">
-<link rel="stylesheet" href="dashboard-layout.css">
+  <link rel="stylesheet" href="controls.css">
+  <link rel="stylesheet" href="entry-layout.css">
+  <link rel="stylesheet" href="message-style.css">
+  <link rel="stylesheet" href="mobile-dock.css">
+  <link rel="stylesheet" href="more-menu.css">
+  <link rel="stylesheet" href="spending.css">
+  <link rel="stylesheet" href="list-timeline.css">
+  <link rel="stylesheet" href="desktop-header.css">
+  <link rel="stylesheet" href="without-daily.css">
+  <link rel="stylesheet" href="dashboard-layout.css">
 </head>
 
 <body>
   <div class="moon-clouds" aria-hidden="true"><span class="moon-cloud back"></span><span
       class="moon-cloud front"></span></div>
   <main class="container">
-    <div class="data-toolbar"><a id="timeline-navigation" class="quiet page-link" href="/timeline">تایم لاین</a><a id="records-navigation" class="quiet page-link" href="/app/index.html?page=records">رویداد ها</a><a id="home-navigation" class="quiet page-link" href="/">داشبورد</a><a id="spending-navigation" class="quiet page-link" href="/spending">خرج‌های انجام‌شده</a><button id="more-open" type="button" class="quiet" aria-haspopup="menu" aria-expanded="false" aria-controls="more-menu">بیشتر</button></div>
-<div id="more-menu" class="more-menu" popover="manual" role="menu" aria-label="بیشتر"><button id="export" type="button" role="menuitem">دریافت بک آپ</button><button id="import" type="button" role="menuitem">بازیابی فایل</button><input id="backup-file" type="file" accept="application/json,.json" hidden><button id="delete-all" type="button" role="menuitem" class="delete-all">حذف همهٔ اطلاعات</button></div>
+    <div class="data-toolbar"><a id="timeline-navigation" class="quiet page-link" href="/timeline">تایم لاین</a><a
+        id="records-navigation" class="quiet page-link" href="/app/index.html?page=records">رویداد ها</a><a
+        id="home-navigation" class="quiet page-link" href="/">داشبورد</a><a id="spending-navigation"
+        class="quiet page-link" href="/spending">خرج‌های انجام‌شده</a><button id="more-open" type="button" class="quiet"
+        aria-haspopup="menu" aria-expanded="false" aria-controls="more-menu">بیشتر</button></div>
+    <div id="more-menu" class="more-menu" popover="manual" role="menu" aria-label="بیشتر"><button id="export"
+        type="button" role="menuitem">دریافت بک آپ</button><button id="import" type="button" role="menuitem">بازیابی
+        فایل</button><input id="backup-file" type="file" accept="application/json,.json" hidden><button id="delete-all"
+        type="button" role="menuitem" class="delete-all">حذف همهٔ اطلاعات</button></div>
     <!-- <section id="filter-controls" class="filter-panel"><div class="tools-heading"><h2>جست‌وجو و فیلتر</h2><button id="scenario-open" class="quiet" type="button">اگر این خرید را انجام بدهم…</button></div><div class="filter-row"><div><label for="filter-query">عنوان</label><input id="filter-query" type="search" placeholder="جست‌وجوی عنوان…"></div><div><label for="filter-type">نوع</label><select id="filter-type"><option value="all">همه</option><option value="income">درآمد</option><option value="expense">هزینه</option><option value="bank">قسط بانکی</option></select></div><div><label for="filter-status">وضعیت</label><select id="filter-status"><option value="all">همه</option><option value="done">تأییدشده</option><option value="pending">تأییدنشده</option></select></div></div><div class="filter-dates"><div><label><input id="filter-from" type="checkbox">از تاریخ</label><div id="filter-from-date" class="date-picker" aria-label="شروع بازه"></div></div><div><label><input id="filter-to" type="checkbox">تا تاریخ</label><div id="filter-to-date" class="date-picker" aria-label="پایان بازه"></div></div><button id="filter-reset" class="quiet">پاک کردن فیلتر</button></div><p id="filter-summary"></p><p id="filter-error" role="status"></p></section> -->
     <section class="overview" aria-label="خلاصه مالی">
-      <article class="balance"><div class="stat-heading"><span>موجودی امروز</span><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 6h16v14H3zM3 6V3h13M15 10h6v6h-6zM17 13h1"/></svg></span></div>
+      <article class="balance">
+        <div class="stat-heading"><span>موجودی امروز</span><span class="stat-icon" aria-hidden="true"><svg
+              viewBox="0 0 24 24">
+              <path d="M3 6h16v14H3zM3 6V3h13M15 10h6v6h-6zM17 13h1" />
+            </svg></span></div>
         <div class="summary-amount"><strong id="today-value">۰</strong><span class="currency-badge">تومان</span></div>
         <small id="today-date"></small>
       </article>
-      
-      <article class="stat-loans"><div class="stat-heading"><span>جمع اقساط باقی‌مانده</span><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3 10 9-6 9 6M4 10h16M5 20h14M7 11v6m5-6v6m5-6v6"/></svg></span></div>
+
+      <article class="stat-loans">
+        <div class="stat-heading"><span>جمع اقساط باقی‌مانده</span><span class="stat-icon" aria-hidden="true"><svg
+              viewBox="0 0 24 24">
+              <path d="m3 10 9-6 9 6M4 10h16M5 20h14M7 11v6m5-6v6m5-6v6" />
+            </svg></span></div>
         <div class="summary-amount"><strong id="loans-value">۰</strong><span class="currency-badge">تومان</span></div>
         <small id="loans-count">۰ قسط</small>
       </article>
-      <article class="stat-forecast"><div class="stat-heading"><span>مانده پس از آخرین رویداد</span><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 18h16M5 14l5-5 4 3 5-7M15 5h4v4"/></svg></span></div>
+      <article class="stat-forecast">
+        <div class="stat-heading"><span>مانده پس از آخرین رویداد</span><span class="stat-icon" aria-hidden="true"><svg
+              viewBox="0 0 24 24">
+              <path d="M4 18h16M5 14l5-5 4 3 5-7M15 5h4v4" />
+            </svg></span></div>
         <div class="summary-amount"><strong id="final-value">—</strong><span class="currency-badge">تومان</span></div>
         <small id="final-label">هنوز رویدادی ثبت نشده</small>
       </article>
-      <article class="upcoming-income"><div class="stat-heading"><span>درآمدهای کسب‌نشده</span><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M4 16v5h16v-5"/></svg></span></div>
+      <article class="upcoming-income">
+        <div class="stat-heading"><span>درآمدهای کسب‌نشده</span><span class="stat-icon" aria-hidden="true"><svg
+              viewBox="0 0 24 24">
+              <path d="M12 3v12m-4-4 4 4 4-4M4 16v5h16v-5" />
+            </svg></span></div>
         <div class="summary-amount"><strong id="pending-income-value">۰</strong><span
             class="currency-badge">تومان</span></div><small id="pending-income-count">درآمدهای با تاریخ دریافت بعد از
           امروز</small>
       </article>
     </section>
     <section id="records-page" hidden>
-      <div class="records-page-heading">
-        <div>
-          <p class="eyebrow">مدیریت اطلاعات</p>
-          <h1>اطلاعات ثبت‌شده</h1>
-        </div><a class="quiet page-link" href="/app/index.html">بازگشت به برنامه‌ریز</a>
-      </div>
-    <div class="layout">
-      <aside class="forms">
-        <section class="panel">
-          <div class="panel-title"><span class="step">۰۱</span>
-            <h2>نقطهٔ شروع</h2>
-          </div>
-          <form id="settings-form" novalidate><label for="savings">پس‌انداز فعلی <em>تومان</em></label><input
-              id="savings" inputmode="numeric" placeholder="مثلاً ۵۰٬۰۰۰٬۰۰۰" autocomplete="off" required><label id="base-date-label">تاریخ مبنای
-              پس‌انداز</label>
-            <div id="base-date" class="date-picker" role="group" aria-labelledby="base-date-label"></div>
-            <p class="field-note">موجودی فعلی را پس از خرج‌های انجام‌شده وارد کنید. خرج‌های روز مبنا دوباره از این مبلغ کم نمی‌شوند.</p><button type="submit" class="primary">ذخیرهٔ مبنای
-              محاسبه</button>
-          </form>
-        </section>
-        <section class="panel">
-          <div class="panel-title"><span class="step">۰۲</span>
-            <h2 id="expense-heading">هزینهٔ پیش رو</h2>
-          </div>
-          <form id="expense-form" novalidate><label for="expense-title">عنوان هزینه</label><input id="expense-title"
-              maxlength="100" placeholder="مثلاً اجاره، خرید لپ‌تاپ" required><label for="expense-amount">مبلغ
-              <em>تومان</em></label><input id="expense-amount" inputmode="numeric" placeholder="مبلغ را وارد کنید" required><label
-              id="expense-date-label">تاریخ پرداخت شمسی</label>
-            <div id="expense-date" class="date-picker" role="group" aria-labelledby="expense-date-label"></div>
-            <div class="form-actions"><button id="expense-submit" type="submit" class="primary">افزودن
-                هزینه</button><button id="expense-cancel" type="button" class="quiet" hidden>لغو ویرایش</button></div>
-          </form>
-        </section>
-        <section class="panel">
-          <div class="panel-title"><span class="step">۰۳</span>
-            <h2 id="loan-heading">اقساط بانکی</h2>
-          </div>
-          <form id="loan-form" novalidate><label for="loan-title">عنوان وام یا بانک</label><input id="loan-title"
-              maxlength="100" placeholder="مثلاً وام بانک ملت" required>
-            <div class="two-fields">
-              <div><label for="loan-amount">مبلغ هر قسط <em>تومان</em></label><input id="loan-amount"
-                  inputmode="numeric" placeholder="مبلغ را وارد کنید" required></div>
-              <div><label for="loan-months">ماه‌های باقی‌مانده</label><input id="loan-months" inputmode="numeric"
-                  placeholder="مثلاً ۱۲" required></div>
-            </div><label id="loan-date-label">تاریخ اولین قسط باقی‌مانده</label>
-            <div id="loan-date" class="date-picker" role="group" aria-labelledby="loan-date-label"></div>
-            <p class="field-note">هر ماه یک قسط؛ تعداد ماه‌ها شامل اولین قسط است. روزهای ناموجود به آخرین روز ماه منتقل
-              می‌شوند.</p>
-            <div class="form-actions"><button id="loan-submit" type="submit" class="primary">افزودن
-                اقساط</button><button id="loan-cancel" type="button" class="quiet" hidden>لغو ویرایش</button></div>
-          </form>
-        </section>
-        <section class="panel">
-          <div class="panel-title"><span class="step">۰۴</span>
-            <h2>درآمد پیش رو</h2>
-          </div>
-          <form id="income-form" novalidate><label for="income-title">عنوان درآمد</label><input id="income-title"
-              maxlength="100" placeholder="مثلاً حقوق، پاداش یا طلب" required><label for="income-amount">مبلغ دریافتی
-              <em>تومان</em></label><input id="income-amount" inputmode="numeric" placeholder="مبلغ را وارد کنید" required><label
-              id="income-date-label">تاریخ دریافت شمسی</label>
-            <div id="income-date" class="date-picker" role="group" aria-labelledby="income-date-label"></div>
-            <p class="field-note">این مبلغ فقط از تاریخ دریافت در محاسبات موجودی لحاظ می‌شود.</p>
-            <div class="form-actions"><button type="submit" class="primary">افزودن درآمد</button></div>
-          </form>
-        </section>
-        
-      </aside>
-      <div class="content">
-        
+      <div class="layout">
+        <aside class="forms">
+          <section class="panel">
+            <div class="panel-title"><span class="step">۰۱</span>
+              <h2>نقطهٔ شروع</h2>
+            </div>
+            <form id="settings-form" novalidate><label for="savings">پس‌انداز فعلی <em>تومان</em></label><input
+                id="savings" inputmode="numeric" placeholder="مثلاً ۵۰٬۰۰۰٬۰۰۰" autocomplete="off" required><label
+                id="base-date-label">تاریخ مبنای
+                پس‌انداز</label>
+              <div id="base-date" class="date-picker" role="group" aria-labelledby="base-date-label"></div>
+              <p class="field-note">موجودی فعلی را پس از خرج‌های انجام‌شده وارد کنید. خرج‌های روز مبنا دوباره از این
+                مبلغ کم نمی‌شوند.</p><button type="submit" class="primary">ذخیرهٔ مبنای
+                محاسبه</button>
+            </form>
+          </section>
+          <section class="panel">
+            <div class="panel-title"><span class="step">۰۲</span>
+              <h2 id="expense-heading">هزینهٔ پیش رو</h2>
+            </div>
+            <form id="expense-form" novalidate><label for="expense-title">عنوان هزینه</label><input id="expense-title"
+                maxlength="100" placeholder="مثلاً اجاره، خرید لپ‌تاپ" required><label for="expense-amount">مبلغ
+                <em>تومان</em></label><input id="expense-amount" inputmode="numeric" placeholder="مبلغ را وارد کنید"
+                required><label id="expense-date-label">تاریخ پرداخت شمسی</label>
+              <div id="expense-date" class="date-picker" role="group" aria-labelledby="expense-date-label"></div>
+              <div class="form-actions"><button id="expense-submit" type="submit" class="primary">افزودن
+                  هزینه</button><button id="expense-cancel" type="button" class="quiet" hidden>لغو ویرایش</button></div>
+            </form>
+          </section>
+          <section class="panel">
+            <div class="panel-title"><span class="step">۰۳</span>
+              <h2 id="loan-heading">اقساط بانکی</h2>
+            </div>
+            <form id="loan-form" novalidate><label for="loan-title">عنوان وام یا بانک</label><input id="loan-title"
+                maxlength="100" placeholder="مثلاً وام بانک ملت" required>
+              <div class="two-fields">
+                <div><label for="loan-amount">مبلغ هر قسط <em>تومان</em></label><input id="loan-amount"
+                    inputmode="numeric" placeholder="مبلغ را وارد کنید" required></div>
+                <div><label for="loan-months">ماه‌های باقی‌مانده</label><input id="loan-months" inputmode="numeric"
+                    placeholder="مثلاً ۱۲" required></div>
+              </div><label id="loan-date-label">تاریخ اولین قسط باقی‌مانده</label>
+              <div id="loan-date" class="date-picker" role="group" aria-labelledby="loan-date-label"></div>
+              <p class="field-note">هر ماه یک قسط؛ تعداد ماه‌ها شامل اولین قسط است. روزهای ناموجود به آخرین روز ماه
+                منتقل
+                می‌شوند.</p>
+              <div class="form-actions"><button id="loan-submit" type="submit" class="primary">افزودن
+                  اقساط</button><button id="loan-cancel" type="button" class="quiet" hidden>لغو ویرایش</button></div>
+            </form>
+          </section>
+          <section class="panel">
+            <div class="panel-title"><span class="step">۰۴</span>
+              <h2>درآمد پیش رو</h2>
+            </div>
+            <form id="income-form" novalidate><label for="income-title">عنوان درآمد</label><input id="income-title"
+                maxlength="100" placeholder="مثلاً حقوق، پاداش یا طلب" required><label for="income-amount">مبلغ دریافتی
+                <em>تومان</em></label><input id="income-amount" inputmode="numeric" placeholder="مبلغ را وارد کنید"
+                required><label id="income-date-label">تاریخ دریافت شمسی</label>
+              <div id="income-date" class="date-picker" role="group" aria-labelledby="income-date-label"></div>
+              <p class="field-note">این مبلغ فقط از تاریخ دریافت در محاسبات موجودی لحاظ می‌شود.</p>
+              <div class="form-actions"><button type="submit" class="primary">افزودن درآمد</button></div>
+            </form>
+          </section>
 
-        <span id="save-state" hidden></span>
+        </aside>
+        <div class="content">
+
+
+          <span id="save-state" hidden></span>
+        </div>
       </div>
-    </div>
       <div class="content records-page-grid">
         <section class="panel">
           <div class="section-top">
@@ -152,7 +172,7 @@
         </section>
       </div>
     </section>
-    
+
     <!-- گزارش ماهانه فعلاً غیرفعال است
 <section id="monthly-page" hidden>
       <div class="records-page-heading">
@@ -186,7 +206,12 @@
       </div>
     </section>
   -->
-<section id="timeline-page" hidden><div class="records-page-heading"><h1>مسیر مالی</h1><a class="quiet page-link" href="/">بازگشت به داشبورد</a></div><div class="content"><section class="panel forecast">
+    <section id="timeline-page" hidden>
+      <div class="records-page-heading">
+        <h1>مسیر مالی</h1><a class="quiet page-link" href="/">بازگشت به داشبورد</a>
+      </div>
+      <div class="content">
+        <section class="panel forecast">
           <div class="section-top">
             <div>
               <p class="eyebrow">مسیر مالی شما</p>
@@ -204,11 +229,38 @@
             <h3>اولین رویداد مالی را اضافه کنید</h3>
             <p>درآمد، هزینه یا قسط بانکی ثبت کنید تا ماندهٔ هر تاریخ مشخص شود.</p>
           </div><button id="show-more" class="quiet load-more" hidden>نمایش رویدادهای بیشتر</button>
-        </section></div></section>
-<section id="spending-page" hidden><header class="spent-heading"><div><p class="eyebrow">دفتر خرج‌های شما</p><h1>خرج‌های انجام‌شده</h1></div><div class="spent-summary"><strong><span id="spent-total">۰</span> تومان</strong><span id="spent-count">۰ خرج</span></div></header><div class="spent-layout"><section class="panel spent-form-panel"><h2>ثبت خرج</h2><form id="spent-form" novalidate><label for="spent-title">عنوان</label><input id="spent-title" maxlength="100" placeholder="مثلاً خرید نان یا تاکسی" required><label for="spent-amount">هزینه به تومان</label><input id="spent-amount" inputmode="numeric" placeholder="مبلغ را وارد کنید" required><label id="spent-date-label">تاریخ دقیق شمسی</label><div id="spent-date" class="date-picker" role="group" aria-labelledby="spent-date-label"></div><p>خرج‌های روز مبنا و قبل از آن در این دفتر باقی می‌مانند، اما از موجودی مبنا کم نمی‌شوند. هزینه یا قسطی را که جدا ثبت کرده‌اید، اینجا دوباره وارد نکنید.</p><div class="spent-actions"><button id="spent-submit" type="submit" class="primary">ثبت خرج</button><button id="spent-cancel" type="button" class="quiet" hidden>لغو ویرایش</button></div></form></section><div id="spent-months" class="spent-months"></div></div></section>
-</main>
+        </section>
+      </div>
+    </section>
+    <section id="spending-page" hidden>
+      <header class="spent-heading">
+        <div>
+          <p class="eyebrow">دفتر خرج‌های شما</p>
+          <h1>خرج‌های انجام‌شده</h1>
+        </div>
+        <div class="spent-summary"><strong><span id="spent-total">۰</span> تومان</strong><span id="spent-count">۰
+            خرج</span></div>
+      </header>
+      <div class="spent-layout">
+        <section class="panel spent-form-panel">
+          <h2>ثبت خرج</h2>
+          <form id="spent-form" novalidate><label for="spent-title">عنوان</label><input id="spent-title" maxlength="100"
+              placeholder="مثلاً خرید نان یا تاکسی" required><label for="spent-amount">هزینه به تومان</label><input
+              id="spent-amount" inputmode="numeric" placeholder="مبلغ را وارد کنید" required><label
+              id="spent-date-label">تاریخ دقیق شمسی</label>
+            <div id="spent-date" class="date-picker" role="group" aria-labelledby="spent-date-label"></div>
+            <p>خرج‌های روز مبنا و قبل از آن در این دفتر باقی می‌مانند، اما از موجودی مبنا کم نمی‌شوند. هزینه یا قسطی را
+              که جدا ثبت کرده‌اید، اینجا دوباره وارد نکنید.</p>
+            <div class="spent-actions"><button id="spent-submit" type="submit" class="primary">ثبت خرج</button><button
+                id="spent-cancel" type="button" class="quiet" hidden>لغو ویرایش</button></div>
+          </form>
+        </section>
+        <div id="spent-months" class="spent-months"></div>
+      </div>
+    </section>
+  </main>
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
-  
+
   <dialog id="confirm-dialog">
     <form method="dialog">
       <h2 id="confirm-title">حذف رکورد</h2>
@@ -259,14 +311,14 @@
   <script src="features.js"></script>
   <script src="planning-tools.js"></script>
   <script src="spending.js"></script>
-<script src="amount-format.js"></script>
+  <script src="amount-format.js"></script>
   <script src="date-dropdown.js"></script>
   <script src="shooting-stars.js"></script>
-<script src="toolbar.js"></script>
-<script src="more.js"></script>
-<script src="current-day.js"></script>
-<script src="storage-sync.js"></script>
-<script src="timeline-scroll.js"></script>
+  <script src="toolbar.js"></script>
+  <script src="more.js"></script>
+  <script src="current-day.js"></script>
+  <script src="storage-sync.js"></script>
+  <script src="timeline-scroll.js"></script>
 </body>
 
 </html>
