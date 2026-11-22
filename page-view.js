@@ -8,7 +8,7 @@
     : 'dashboard';
   const dashboard = active === 'dashboard';
   document.querySelector('.overview').hidden = !dashboard;
-  document.querySelector('.layout').hidden = !dashboard;
+  document.querySelector('.layout').hidden = active !== 'records';
   for (const page of ['records', 'timeline', 'spending']) {
     document.getElementById(page + '-page').hidden = active !== page;
   }

@@ -25,6 +25,7 @@
 <link rel="stylesheet" href="list-timeline.css">
 <link rel="stylesheet" href="desktop-header.css">
 <link rel="stylesheet" href="without-daily.css">
+<link rel="stylesheet" href="dashboard-layout.css">
 </head>
 
 <body>
@@ -35,25 +36,32 @@
 <div id="more-menu" class="more-menu" popover="manual" role="menu" aria-label="بیشتر"><button id="export" type="button" role="menuitem">دریافت بک آپ</button><button id="import" type="button" role="menuitem">بازیابی فایل</button><input id="backup-file" type="file" accept="application/json,.json" hidden><button id="delete-all" type="button" role="menuitem" class="delete-all">حذف همهٔ اطلاعات</button></div>
     <!-- <section id="filter-controls" class="filter-panel"><div class="tools-heading"><h2>جست‌وجو و فیلتر</h2><button id="scenario-open" class="quiet" type="button">اگر این خرید را انجام بدهم…</button></div><div class="filter-row"><div><label for="filter-query">عنوان</label><input id="filter-query" type="search" placeholder="جست‌وجوی عنوان…"></div><div><label for="filter-type">نوع</label><select id="filter-type"><option value="all">همه</option><option value="income">درآمد</option><option value="expense">هزینه</option><option value="bank">قسط بانکی</option></select></div><div><label for="filter-status">وضعیت</label><select id="filter-status"><option value="all">همه</option><option value="done">تأییدشده</option><option value="pending">تأییدنشده</option></select></div></div><div class="filter-dates"><div><label><input id="filter-from" type="checkbox">از تاریخ</label><div id="filter-from-date" class="date-picker" aria-label="شروع بازه"></div></div><div><label><input id="filter-to" type="checkbox">تا تاریخ</label><div id="filter-to-date" class="date-picker" aria-label="پایان بازه"></div></div><button id="filter-reset" class="quiet">پاک کردن فیلتر</button></div><p id="filter-summary"></p><p id="filter-error" role="status"></p></section> -->
     <section class="overview" aria-label="خلاصه مالی">
-      <article class="balance"><span>موجودی امروز</span>
+      <article class="balance"><div class="stat-heading"><span>موجودی امروز</span><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 6h16v14H3zM3 6V3h13M15 10h6v6h-6zM17 13h1"/></svg></span></div>
         <div class="summary-amount"><strong id="today-value">۰</strong><span class="currency-badge">تومان</span></div>
         <small id="today-date"></small>
       </article>
       
-      <article><span>جمع اقساط باقی‌مانده</span>
+      <article class="stat-loans"><div class="stat-heading"><span>جمع اقساط باقی‌مانده</span><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3 10 9-6 9 6M4 10h16M5 20h14M7 11v6m5-6v6m5-6v6"/></svg></span></div>
         <div class="summary-amount"><strong id="loans-value">۰</strong><span class="currency-badge">تومان</span></div>
         <small id="loans-count">۰ قسط</small>
       </article>
-      <article><span>مانده پس از آخرین رویداد</span>
+      <article class="stat-forecast"><div class="stat-heading"><span>مانده پس از آخرین رویداد</span><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 18h16M5 14l5-5 4 3 5-7M15 5h4v4"/></svg></span></div>
         <div class="summary-amount"><strong id="final-value">—</strong><span class="currency-badge">تومان</span></div>
         <small id="final-label">هنوز رویدادی ثبت نشده</small>
       </article>
-      <article class="upcoming-income"><span>درآمدهای کسب‌نشده</span>
+      <article class="upcoming-income"><div class="stat-heading"><span>درآمدهای کسب‌نشده</span><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M4 16v5h16v-5"/></svg></span></div>
         <div class="summary-amount"><strong id="pending-income-value">۰</strong><span
             class="currency-badge">تومان</span></div><small id="pending-income-count">درآمدهای با تاریخ دریافت بعد از
           امروز</small>
       </article>
     </section>
+    <section id="records-page" hidden>
+      <div class="records-page-heading">
+        <div>
+          <p class="eyebrow">مدیریت اطلاعات</p>
+          <h1>اطلاعات ثبت‌شده</h1>
+        </div><a class="quiet page-link" href="/app/index.html">بازگشت به برنامه‌ریز</a>
+      </div>
     <div class="layout">
       <aside class="forms">
         <section class="panel">
@@ -121,13 +129,6 @@
         <span id="save-state" hidden></span>
       </div>
     </div>
-    <section id="records-page" hidden>
-      <div class="records-page-heading">
-        <div>
-          <p class="eyebrow">مدیریت اطلاعات</p>
-          <h1>اطلاعات ثبت‌شده</h1>
-        </div><a class="quiet page-link" href="/app/index.html">بازگشت به برنامه‌ریز</a>
-      </div>
       <div class="content records-page-grid">
         <section class="panel">
           <div class="section-top">
