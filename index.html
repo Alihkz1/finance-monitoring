@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="readability.css">
   <link rel="stylesheet" href="shooting-stars.css">
   <link rel="stylesheet" href="moon.css">
+  <link rel="stylesheet" href="space-decor.css">
   <link rel="stylesheet" href="features.css">
   <link rel="stylesheet" href="planning-tools.css">
 <link rel="stylesheet" href="controls.css">
@@ -29,6 +30,10 @@
 </head>
 
 <body>
+  <div class="space-decor" aria-hidden="true">
+    <svg class="space-saturn" viewBox="0 0 240 160"><defs><linearGradient id="saturn-tone" x2=".8" y2="1"><stop stop-color="#ead0ad"/><stop offset=".5" stop-color="#a58cbb"/><stop offset="1" stop-color="#544573"/></linearGradient></defs><g transform="rotate(-24 120 80)"><ellipse cx="120" cy="80" rx="109" ry="28" fill="none" stroke="#c7b3df" stroke-width="9" opacity=".3"/><circle cx="120" cy="80" r="48" fill="url(#saturn-tone)"/><path d="M11 80a109 28 0 0 0 218 0" fill="none" stroke="#dbc5e6" stroke-width="8" opacity=".7"/></g></svg>
+    <svg class="space-ufo" viewBox="0 0 180 160"><defs><linearGradient id="ufo-beam" x2="0" y2="1"><stop stop-color="#a6e6e0" stop-opacity=".15"/><stop offset="1" stop-color="#a6e6e0" stop-opacity="0"/></linearGradient></defs><path d="m68 75-25 80h94l-25-80" fill="url(#ufo-beam)"/><path d="M62 59c0-39 56-39 56 0" fill="#8ccec8" fill-opacity=".2" stroke="#b1e6e0" stroke-opacity=".7" stroke-width="2"/><path d="M73 48c2-8 6-12 12-14" fill="none" stroke="#d7ffff" stroke-opacity=".6" stroke-width="3" stroke-linecap="round"/><ellipse cx="90" cy="63" rx="64" ry="16" fill="#454763" stroke="#b9b5de" stroke-width="2"/><path d="M36 69q54 37 108 0" fill="#65607e"/><g fill="#bbefe4"><circle cx="59" cy="69" r="3"/><circle cx="90" cy="74" r="3"/><circle cx="121" cy="69" r="3"/></g></svg>
+  </div>
   <div class="moon-clouds" aria-hidden="true"><span class="moon-cloud back"></span><span
       class="moon-cloud front"></span></div>
   <main class="container">
@@ -36,7 +41,7 @@
 <div id="more-menu" class="more-menu" popover="manual" role="menu" aria-label="بیشتر"><button id="export" type="button" role="menuitem">دریافت بک آپ</button><button id="import" type="button" role="menuitem">بازیابی فایل</button><input id="backup-file" type="file" accept="application/json,.json" hidden><button id="delete-all" type="button" role="menuitem" class="delete-all">حذف همهٔ اطلاعات</button></div>
     <!-- <section id="filter-controls" class="filter-panel"><div class="tools-heading"><h2>جست‌وجو و فیلتر</h2><button id="scenario-open" class="quiet" type="button">اگر این خرید را انجام بدهم…</button></div><div class="filter-row"><div><label for="filter-query">عنوان</label><input id="filter-query" type="search" placeholder="جست‌وجوی عنوان…"></div><div><label for="filter-type">نوع</label><select id="filter-type"><option value="all">همه</option><option value="income">درآمد</option><option value="expense">هزینه</option><option value="bank">قسط بانکی</option></select></div><div><label for="filter-status">وضعیت</label><select id="filter-status"><option value="all">همه</option><option value="done">تأییدشده</option><option value="pending">تأییدنشده</option></select></div></div><div class="filter-dates"><div><label><input id="filter-from" type="checkbox">از تاریخ</label><div id="filter-from-date" class="date-picker" aria-label="شروع بازه"></div></div><div><label><input id="filter-to" type="checkbox">تا تاریخ</label><div id="filter-to-date" class="date-picker" aria-label="پایان بازه"></div></div><button id="filter-reset" class="quiet">پاک کردن فیلتر</button></div><p id="filter-summary"></p><p id="filter-error" role="status"></p></section> -->
     <section class="overview" aria-label="خلاصه مالی">
-      <article class="balance"><div class="stat-heading"><span>موجودی امروز</span><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 6h16v14H3zM3 6V3h13M15 10h6v6h-6zM17 13h1"/></svg></span></div>
+      <article class="balance"><div class="stat-heading"><span class="stat-heading-label"><span>موجودی امروز</span><span id="today-heading-date" class="stat-heading-date"></span></span><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 6h16v14H3zM3 6V3h13M15 10h6v6h-6zM17 13h1"/></svg></span></div>
         <div class="summary-amount"><strong id="today-value">۰</strong><span class="currency-badge">تومان</span></div>
         <small id="today-date"></small>
       </article>
@@ -51,8 +56,7 @@
       </article>
       <article class="upcoming-income"><div class="stat-heading"><span>درآمدهای کسب‌نشده</span><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v12m-4-4 4 4 4-4M4 16v5h16v-5"/></svg></span></div>
         <div class="summary-amount"><strong id="pending-income-value">۰</strong><span
-            class="currency-badge">تومان</span></div><small id="pending-income-count">درآمدهای با تاریخ دریافت بعد از
-          امروز</small>
+            class="currency-badge">تومان</span></div><small id="pending-income-count">۰ درآمد برنامه ریزی شده</small>
       </article>
     </section>
     <section id="records-page" hidden>

@@ -1,0 +1,13 @@
+/* Background ornaments stay outside the interactive content. */
+.space-decor { position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:-1; }
+.space-saturn { position:absolute; width:220px; right:5%; top:17%; opacity:.65; filter:drop-shadow(0 0 28px #b6a0dc22); }
+.space-ufo { position:absolute; width:155px; left:6%; bottom:7%; opacity:.65; filter:drop-shadow(0 0 16px #a6e6e022); }
+@media (prefers-reduced-motion:no-preference) {
+ .space-saturn { animation:planet-float 19s ease-in-out infinite alternate; }
+ .space-ufo { animation:planet-float 8s -3s ease-in-out infinite alternate-reverse; }
+ @keyframes planet-float { from { translate:0 -7px; } to { translate:0 7px; } }
+}
+@media(max-width:700px) {
+ .space-saturn { width:130px; right:-18px; top:18%; opacity:.45; }
+ .space-ufo { width:100px; left:-8px; bottom:90px; opacity:.4; }
+}

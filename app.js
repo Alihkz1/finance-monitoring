@@ -84,11 +84,12 @@ const renderViews = new Set();
 let renderedSnapshot;
 function renderSummary(view) {
     const currentBalance = view.actual;
+    $('today-heading-date').textContent = dateText(today);
     $('pending-income-value').textContent = fa.format(view.pendingAmount);
-    $('pending-income-count').textContent = fa.format(view.pendingCount) + ' درآمد دریافت‌نشده، شامل معوق';
+    $('pending-income-count').textContent = fa.format(view.pendingCount) + ' درآمد برنامه ریزی شده';
     $('today-value').textContent = currentBalance === null ? '—' : fa.format(currentBalance);
     $('today-value').className = currentBalance < 0 ? 'negative' : '';
-    $('today-date').textContent = P.ordinal(today) < P.ordinal(state.base) ? 'تاریخ مبنا هنوز نرسیده است' : dateText(today) + (P.ordinal(today) === P.ordinal(state.base) ? ' · روز مبنا' : ' · تراکنش‌های تأییدشده و خرج‌های ثبت‌شده');
+    $('today-date').textContent = P.ordinal(today) < P.ordinal(state.base) ? 'تاریخ مبنا هنوز نرسیده است' : dateText(today) + (P.ordinal(today) === P.ordinal(state.base) ? ' · روز مبنا' : '');
     $('loans-value').textContent = fa.format(view.unpaidAmount);
     $('loans-count').textContent = fa.format(view.unpaidCount) + ' قسط پرداخت‌نشده';
 }
