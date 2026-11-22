@@ -97,3 +97,22 @@
 
 .stat-heading-label { display: flex; flex: 1; min-width: 0; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; }
 .stat-heading-date { color: #afbed7; font-size: 12px; font-weight: 400; white-space: nowrap; }
+/* Keep the application centered on displays wider than Full HD. */
+@media (min-width: 1921px) {
+  html { background: #0b1025; }
+  body { max-width: 1920px; margin-inline: auto; }
+  .app-header { left: calc((100% - 1920px) / 2); right: calc((100% - 1920px) / 2); }
+  html::before, html::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: calc((100% - 1920px) / 2);
+    background: #0b1025;
+    z-index: 100;
+    pointer-events: none;
+  }
+  html::before { left: 0; }
+  html::after { right: 0; }
+  .space-decor, .shooting-stars { left: calc((100% - 1920px) / 2); right: calc((100% - 1920px) / 2); }
+}
